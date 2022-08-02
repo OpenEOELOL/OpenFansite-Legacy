@@ -23,4 +23,4 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 6. 访问 `http://127.0.0.1:8080` 打开站点。**完成！**
 
 ## 协议
-采用 CC-BY-SA-4.0，使用时请遵守。
+采用 [CC-BY-SA-4.0](https://github.com/OpenEOELOL/OpenFansite/blob/main/LICENSE)，使用时请遵守。

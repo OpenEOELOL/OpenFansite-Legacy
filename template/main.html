@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="referrer" content="never" />
+        <title>EOELOL Project</title>
+        <!-- style -->
+        <link href="../src/main.css" rel="stylesheet" />
+        <style>
+            @media (prefers-color-scheme: dark) {
+                html,
+                body {
+                    background-color: #000000;
+                }
+            }
+            @keyframes openAnimation {
+                from {
+                    opacity: 0%;
+                }
+                to {
+                    opacity: 100%;
+                }
+            }
+            html,
+            body {
+                background-color: #f2f2f2;
+                animation: openAnimation 0.2s ease-in-out;
+                animation-delay: 0.1s;
+            }
+        </style>
+    </head>
+    <body>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        />
+        <div class="main">
+            <header class="menu">
+                <h1 id="menu_title">EOE.LOL</h1>
+                <!-- <button
+                    id="popular"
+                    class="menu_option"
+                    aria-label="切换到按人气排序"
+                >
+                    人气推荐
+                </button>
+                <button
+                    id="goodFanmade"
+                    class="menu_option"
+                    aria-label="切换到精选二创列表"
+                >
+                    精选二创
+                </button> -->
+
+                <div id="OpenInApp">
+                    <label class="Switch" id="OpenInAppSwitchLabel">
+                        <input
+                            type="checkbox"
+                            class="SwitchCheckBox"
+                            id="SwitchCheckBox"
+                            aria-label="开关选项：使用哔哩哔哩应用观看视频"
+                        />
+                        <span class="Slider Round" id="OpenInAppSlider"></span>
+                    </label>
+                    <p>在哔哩哔哩开启</p>
+                </div>
+                <div id="forLargeScreen"></div>
+            </header>
+            <main class="videoMain">
+                <nav class="linkBar">
+                    <a
+                        href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1W8BsfD&businessType=9&from=246610&biz=ka"
+                        >前往 QQ 频道<img src="./assets/link.svg" class="linkTip" alt="外部链接指示"></a
+                    >
+                    <a href="https://t.me/ElfofEra">前往 Telegram 频道<img src="./assets/link.svg" class="linkTip" alt="外部链接指示"></a>
+                    <a href="#disclaimer">免责声明</a>
+                </nav>
+                <h1 id="listTitle">大家都在看</h1>
+                <div id="videoList">
+                    <!--div class="videoCard" role="button">
+                        <button onclick="videoBV('BV1vF411n7er')  video2App('{av}');" aria-label="视频标题：大家好啊 我是米诺 今天给大家带来想看的东西嗷" role="link">
+                        <div class="videoCover">
+                            <img
+                                src="http://popii.test.upcdn.net/2022/07/21/62d8d3b812fff.png"
+                                alt=""
+                                />
+                        </div>
+                        <div class="videoTitle">大家好啊 我是米诺 今天给大家带来想看的东西嗷</div>
+                        <div class="videoAuthor"><img src="./assets/UP.svg" alt="视频博主图标">米诺</div>
+                        <div class="videoInfo"><img src="./assets/播放.svg" alt="播放量图标"> 3.2K <img src="./assets/投币.svg" alt="投币支持量图标"> 0.9K</div>
+                        </button>
+                    </div-->
+                    {% for videoCard in videoResult %}
+                    <div class="videoCard" role="button">
+                        <button
+                            onclick="video('{{videoCard.av}}');"
+                            aria-label="视频标题：{{videoCard.videoTitle}}"
+                            role="link"
+                        >
+                            <div class="videoCover">
+                                <img
+                                    src="{{videoCard.videoCover}}"
+                                    alt=""
+                                    loading="lazy"
+                                />
+                            </div>
+                            <div class="videoTitle">
+                                {{videoCard.videoTitle}}<img src="./assets/link.svg" class="linkTip" alt="外部链接指示">
+                            </div>
+                            <div class="videoAuthor">
+                                <img
+                                    src="./assets/UP.svg"
+                                    alt="视频博主图标"
+                                />{{videoCard.videoAuthor}}
+                            </div>
+                            <div class="videoInfo">{{videoCard.videoInfo}}</div>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr class="hr" data-content="第{{pageNumber.index}}页" />
+                <div id="pageSwitcher">
+                    <button
+                        id="previousPage"
+                        class="pageSwitcherText"
+                        aria-label="切换到上一页，现在是第{{pageNumber.index}}页"
+                    >
+                        &lt;&nbsp;上一页
+                    </button>
+                    <div
+                        style="
+                            width: 17px;
+                            color: rgba(0, 0, 0, 0);
+                            font-size: 0px;
+                        "
+                        id="blank"
+                    ></div>
+                    <button
+                        id="nextPage"
+                        class="pageSwitcherText"
+                        aria-label="切换到下一页，现在是第{{pageNumber.index}}页"
+                    >
+                        下一页&nbsp;&gt;
+                    </button>
+                </div>
+                <hr class="hr" data-content=""/>
+                <footer>
+                <div id="disclaimer">
+                    <h2>免责声明</h2>
+                    本页面提供的任何数据为哔哩哔哩抓取内容，我（站长
+                    KurisuCat）不承担因此内容带来的风险。<br />
+                    本站仅为个人性质的视频列表收录站点。从建站开始，从未有意标榜或冒充是“哔哩哔哩”官方网站或“EOE组合”官方网站。请认准“哔哩哔哩”官方网站
+                    <p class="link">（bilibili.com）</p>
+                    以及“EOE组合”官方账号
+                    <p class="link">
+                        （https://space.bilibili.com/2018113152）
+                    </p>
+                    <br>
+                    本站不保证指向外部的链接为安全链接，请仔细甄别。（此处的链接包括但不限于点击按钮后自动跳转到其他页面或直接点击链接）
+                </div>
+                <p id="copyright">&copy;2022 KurisuCat</p>
+                </footer>
+            </main>
+        </div>
+        <script>
+            if ("{{pageNumber.index}}" == "1") {
+                document.getElementById("previousPage").classList.add("hide");
+                document.getElementById("blank").classList.add("hide");
+            }
+            function video(av) {
+                //window.location.href = link;
+                var checkbox = document.getElementById("SwitchCheckBox");
+                if (checkbox.checked) {
+                    var link = "bilibili://video/" + av;
+                    window.open(link, "_newtab");
+                } else {
+                    var link = "https://www.bilibili.com/video/av" + av;
+                    window.open(link, "_newtab");
+                }
+            }
+            document.getElementById("previousPage").onclick = function () {
+                window.location.href = "/{{pageNumber.previous}}";
+            };
+            document.getElementById("nextPage").onclick = function () {
+                window.location.href = "/{{pageNumber.next}}";
+            };
+            function setCookie(cname, cvalue, exdays) {
+                //偷的菜鸟教程 https://www.runoob.com/js/js-cookies.html
+                var d = new Date();
+                d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+                var expires = "expires=" + d.toGMTString();
+                document.cookie = cname + "=" + cvalue + "; " + expires;
+            }
+            function getCookie(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(";");
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i].trim();
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+            var checkbox = document.getElementById("SwitchCheckBox");
+            if (getCookie("OpenInApp") == "true") {
+                checkbox.checked = true;
+            }
+            checkbox.addEventListener(
+                "click",
+                function () {
+                    if (checkbox.checked) {
+                        setCookie("OpenInApp", "true", 365);
+                        alert(
+                            "选项“在哔哩哔哩开启”会让你在哔哩哔哩应用里打开视频。\n前提是你需要安装了“哔哩哔哩”应用。"
+                        );
+                    } else {
+                        setCookie("OpenInApp", "false", 365);
+                    }
+                },
+                false
+            );
+        </script>
+    </body>
+</html>

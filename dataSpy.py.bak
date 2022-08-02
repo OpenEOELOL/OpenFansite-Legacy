@@ -1,0 +1,191 @@
+# -*- coding: UTF-8 -*-
+from bilibili_api import sync, search, settings
+from collections import OrderedDict
+import json
+import random
+import time
+
+def wait():
+    sec = 2.33 #这里填等待秒 太快会被 -412 拦截
+    time.sleep(sec)
+    print("等等陈睿",sec,"秒")
+
+def videoSearch(kw, pg):  # 哔哩哔哩搜索 kw=关键词（） pg=页面（int）
+    #print("搜索视频，关键词“", kw, "”，第", pg, "页。")
+    result = sync(search.web_search(keyword=kw, page=pg))
+    wait()
+    return result
+
+
+def dataSpy(kw, pg):  # 数据捉虫
+    info = videoSearch(kw, pg)  # 获取搜索原始信息
+
+    # 过滤视频搜索结果
+    result = info['result']
+    for a in result:
+        if a["result_type"] == "video":
+            #print("Is a video dict!",a)
+            videoResult = a["data"]
+        else:
+            #print("😭", a)
+            pass
+
+    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO"]
+    __weight_determination = 0
+    times = 0
+    for i in videoResult:  # 处理搜索结果 计算权重
+        times = times+1
+        # print("😤",i)
+        __weight_determination = 0
+        __weight = 0
+        for b in i:
+            if b == "title":  # 消除 <em> 关键词标记
+                #print(i[b].replace('<em class="keyword">', "").replace('</em>', ""))
+                i[b] = i[b].replace('<em class="keyword">',
+                                    "").replace('</em>', "")
+                print("标题：", i[b])
+                # if i[b].find("多米诺") != -1:
+                #     videoResult.remove(i)
+                #     __weight_determination = -1
+                #     break
+            if b == "author":  # 权重 官方视频 权重-20
+                if i in authorBlackList:
+                    __weight_determination = int(__weight_determination - 2000)
+                    #print("检测到作者")
+                else:
+                    __weight_determination = __weight_determination
+                #print("计算作者权重：", __weight_determination)
+            if b == "like":  # 权重 计算点赞
+                __like = i[b]
+                if i[b] <= 900:  # 权重 若点赞小于50 权重+100+点赞量
+                    __weight_determination = __weight_determination + 100 + i[b]
+                else:  # 权重 如果都不匹配 权重+35+点赞量
+                    __weight_determination = __weight_determination + \
+                        35 + int(i[b]*0.2)
+                #print("计算点赞权重：", __weight_determination)
+            if b == "coin":  # 权重 计算投币
+                if __like <= i[b]:  # 权重 若投币比点赞多 权重+40+投币量
+                    __weight_determination = __weight_determination + 70 + i[b]
+                elif i[b] >= 86:  # 权重 若投币大于86 权重-10+投币量
+                    __weight_determination = __weight_determination - 5 + i[b]
+                else:  # 权重 如果都不匹配 权重+20+投币量
+                    __weight_determination = __weight_determination + 20 + i[b]
+                #print("计算投币权重：", __weight_determination)
+            if b == "favorites":  # 权重 收藏 权重收藏*2
+                __weight_determination = int(
+                    __weight_determination + (i[b]*0.5))
+                #print("计算收藏权重：", __weight_determination)
+
+            if b == "senddate":  # 权重 5*24*60*60秒后（五天后）权重*0.1
+                __sendTimeCalc = int(int(time.time()) - int(i[b]))
+                if __sendTimeCalc >= 432000:
+                    __weight_determination = int(
+                        __weight_determination*0.1-999)
+                if __sendTimeCalc <= 259200:
+                    __weight_determination = int(
+                        __weight_determination*1.3)
+                #print("计算时间权重：", __weight_determination)
+            if b == "play":
+                if i[b] <= 7000:
+                    __weight_determination = int(
+                        __weight_determination+int(i[b]*0.1)+10)
+                if i[b] <= 5000:
+                    __weight_determination = int(
+                        __weight_determination+int(i[b]*0.2)+10)
+                if i[b] <= 2000:
+                    __weight_determination = int(
+                        __weight_determination+int(i[b]*0.3))
+                #print("计算点阅权重：", __weight_determination)
+            if b == "video_review":
+                if i[b] <= 100:
+                    __weight_determination = int(
+                        __weight_determination + (i[b]*1.2))
+                #print("计算弹幕权重：", __weight_determination)
+
+        __weight = 40 + random.randint(-10, 50) + __weight_determination
+        print("最终权重：", __weight)
+        i.update({"__weight": __weight})
+
+        i = videoResult
+
+    #print(videoResult)
+    return videoResult
+
+    # print(result)
+
+
+#dataSpy("米诺", 3)
+def makeMutiPageResultJson(keyword):
+    result = []
+    page = videoSearch(keyword, 1)["numPages"]
+    if page >= 20:
+        page = 20
+    for i in range(1, page):
+        #print("第{}页".format(i))
+        result = result + dataSpy(keyword, i)
+        wait()
+    #print(result)
+    return result
+
+
+def makeJsonFile():
+    result = []
+    nameList = ["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"]
+    for i in nameList:
+        result = result + makeMutiPageResultJson(i)
+    Order = OrderedDict()
+    for item in result:
+        Order.setdefault(item['bvid'], {**item, })
+    Order = list(Order.values())
+    result = Order
+    result.sort(key=lambda x: x["__weight"])
+    result.reverse()
+    # del result[-20: -1]
+    # del result[0: 5]
+    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌"]  # 无关结果
+    #print("列表长度：",len(result))
+    the_times = 0
+    for __useless_variable in range(0,30):
+        the_times = the_times + 1
+        #print("第{}次运行".format(the_times))
+        for bL in BlockWord:
+            for i in result:
+                if i['title'].find(bL) != -1:
+                    #print("已删除黑名单。",bL)
+                    try:
+                        result.remove(i)
+                    except ValueError:
+                        pass
+                if i['author'].find(bL) != -1:
+                    #print("已删除黑名单。",bL)
+                    try:
+                        result.remove(i)
+                    except ValueError:
+                        pass
+                if i['description'].find(bL) != -1:
+                    #print("已删除黑名单。", bL)
+                    try:
+                        result.remove(i)
+                    except ValueError:
+                        pass
+                if i['description'].find(bL) != -1:
+                    #print("已删除黑名单。", bL)
+                    try:
+                        result.remove(i)
+                    except ValueError:
+                        pass
+                if i['tag'].find(bL) != -1:
+                    #print("已删除黑名单。", bL)
+                    try:
+                        result.remove(i)
+                    except ValueError:
+                        pass
+    print("\n\n运行完毕，列表长度：", len(result))
+    return result
+
+
+result = makeJsonFile()
+
+resultJson = open("result.json", "w", encoding="utf-8")
+resultJson.write(str(result))
+resultJson.close()

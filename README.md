@@ -9,7 +9,7 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 ### 优点
 
 - **迅速**，通过使用高性能服务器软件 Sanic 给用户提供服务。
-- **界面优美**，由 KurisuCat 手搓的 CSS，以及他的 *独特的审美（相较他自己而言）* 对 UI 的把控。
+- **界面优美**，由 KurisuCat 手搓的 CSS， 以及他的 *独特的审美（相较他自己而言）* 对 UI 的把控。
 - **简单操作**，对*任何人*都易用的软件，通过对无障碍优化以及直观的交互让每个人都能轻松使用。
 
 ### 缺点
@@ -21,15 +21,15 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 ## 使用
 
 1. Fork 一份代码
-2. 在终端执行 `pip install -r requirements.txt` 安装必要的库。
-3. 修改 `dataSpy.py` 里的代码，对搜索关键词、搜索页数、无关搜索结果、一创作者名单等进行调整。
-4. 使用 `crontab` 命令定时对 `dataSpy.py` 执行。或立即执行，执行后会生成 `result.json` 文件。请不要动它。
-5. 执行 `server.py` 文件或在终端执行 `sanic server.app` 来启动站点。
-6. 访问 `http://127.0.0.1:8080` 打开站点。**完成！**
+2. 在终端执行 ` pip install -r requirements.txt ` 安装必要的库。
+3. 修改 ` dataSpy.py ` 里的代码，对搜索关键词、搜索页数、无关搜索结果、一创作者名单等进行调整。
+4. 使用 ` crontab ` 命令定时对 ` dataSpy.py ` 执行。或立即执行，执行后会生成 ` result.json ` 文件。请不要动它。
+5. 执行 ` server.py ` 文件或在终端执行 ` sanic server.app ` 来启动站点。
+6. 访问 ` http://127.0.0.1:8080 ` 打开站点。**完成！**
 
 ## 协议
 
-采用 [CC-BY-SA-4.0](https://github.com/OpenEOELOL/OpenFansite/blob/main/LICENSE)，使用时请遵守。
+采用 [CC-BY-SA-4.0](https://github.com/OpenEOELOL/OpenFansite/blob/main/LICENSE)， 使用时请遵守。
 
 ## 致谢
 
@@ -38,7 +38,8 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 - 虞莫、柚恩、露早、莞儿、米诺，五人。
 - 贡献者们
 - 我的家人
-- Google、Stack Overflow、菜鸟教程等网站
+- Google、Stack Overflow、 菜鸟教程等网站
+- AsAsFans
 - 我喜欢的人
 - 我的朋友
 - 还有你们 🥰

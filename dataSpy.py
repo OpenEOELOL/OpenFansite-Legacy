@@ -14,7 +14,7 @@ def wait(): #“等等陈睿”函数
         太快会被陈睿 Gank，特此写函数。
     """
 
-    sec = 2.33 #这里填等待秒 太快会被 -412 拦截
+    sec = 0.88 #这里填等待秒 太快会被 -412 拦截
     time.sleep(sec)
 
 def videoSearch(kw, pg, printOrNot=True): #视频搜索函数
@@ -58,10 +58,8 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "title":  # 消除  <em> 关键词标记
                 i[b] = i[b].replace('<em class="keyword">', "").replace('</em>', "")
                 print("标题：", i[b])
-            if b == "pic":  # 消除  <em> 关键词标记
-                i[b] = i[b].replace('//i1.hdslb.com/bfs/archive/', "https://bili1.eoe.lol/").replace(
-                    '//i1.hdslb.com/bfs/archive/', "https://bili0.eoe.lol/")
-
+            if b == "pic":  # 加載縮略圖照片
+                i[b] = i[b]+"@544w_340h_1c"
             if b == "author": #权重 计算是否一创
                 for BlackAuthor in authorBlackList:
                     if i[b].find(BlackAuthor) != -1:

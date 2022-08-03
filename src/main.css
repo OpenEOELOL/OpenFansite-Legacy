@@ -1,12 +1,14 @@
 * {
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html,
 body {
     height: 100%;
     width: 100%;
+    font-size: 17px;
 }
 
 button {
@@ -47,7 +49,7 @@ button {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    /* position: relative; */
+    position: relative;
 }
 
 /* .menu::before {
@@ -95,6 +97,7 @@ button {
     background-color: #f2f2f2;
     width: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #listTitle {
@@ -155,7 +158,6 @@ button {
     max-width: 10em;
 }
 
-
 .videoAuthor img {
     height: 12px;
     margin-bottom: -1px;
@@ -190,7 +192,7 @@ button {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: 0.2s;
+    transition: 0.2s cubic-bezier(0.05, 0, 0, 1);
 }
 
 .Slider:before {
@@ -201,16 +203,21 @@ button {
     left: 4px;
     bottom: 3px;
     background-color: white;
-    transition: 0.2s;
+    transition: 0.2s cubic-bezier(0.05, 0, 0, 1);
 }
 
 input.SwitchCheckBox:checked + .Slider {
-    background-color: rgba(48, 117, 255,1);
-    box-shadow: 0 0 16px rgba(48, 117, 255,0.7);
+    background-color: rgba(48, 117, 255, 1);
+    box-shadow: 0 0 16px rgba(48, 117, 255, 0.7);
 }
 
 input.SwitchCheckBox:hover + .Slider {
-    box-shadow: 0 0 23px rgba(255,255,255,0.5);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+input.SwitchCheckBox:checked:hover + .Slider {
+    background-color: rgba(48, 117, 255, 1);
+    box-shadow: 0 0 16px rgba(48, 117, 255, 0.7);
 }
 
 input.SwitchCheckBox:checked + .Slider:before {
@@ -231,21 +238,70 @@ input.SwitchCheckBox:checked + .Slider:before {
     flex-direction: row;
     margin: 0 auto;
 }
-#OpenInApp p{
+#OpenInApp p {
     margin-left: 5px;
     margin-top: 1px;
 }
 
-.linkBar a{
-    background-color: #F2F2F2;
-    border: 1px solid #D9D9D9;
+.linkBar {
+    overflow-x: scroll;
+    /* width: 100vw; */
+    height: calc(8px + 6px + 1em + 5px);
+    padding: 7px 0px;
+    scroll-behavior: smooth;
+}
+
+.floatMessage {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    width: 75%;
+    height: 60%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1em;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
+    color: #f2f2f2;
+    z-index: 9;
+    backdrop-filter: blur(10px);
+}
+
+#cancelTheWebkitWall {
+    background-color: rgba(0, 0, 0, 0);
+    color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+    transition: border 0.2s cubic-bezier(0.05, 0, 0, 1);
+}
+
+#cancelTheWebkitWall:hover {
+    background-color: rgba(0, 0, 0, 0);
+    color: #f2f2f2;
+    border: 5px solid #f2f2f2;
+}
+
+.linkBar::-webkit-scrollbar {
+    display: none;
+}
+
+.linkBar div {
+    white-space: nowrap;
+}
+
+.linkBar a {
+    background-color: #f2f2f2;
+    border: 1px solid #d9d9d9;
     color: #030303;
     padding: 8px 12px;
-    transition: background-color 0.5s cubic-bezier(0.05,0,0,1);
+    transition: background-color 0.5s cubic-bezier(0.05, 0, 0, 1);
     border-radius: 50px;
     font-size: 0.8em;
     text-decoration: none;
-    margin-right: 6px;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 .linkTip {
@@ -255,13 +311,17 @@ input.SwitchCheckBox:checked + .Slider:before {
 }
 
 .linkBar a:hover {
-    background-color: #E5E5E5;
-    border: 1px solid #CECECE;
+    background-color: #e5e5e5;
+    border: 1px solid #cecece;
 }
 
 .linkBar.pressed {
     background-color: #030303;
     border: 1px solid #030303;
+}
+
+.forSmallScreen {
+    display: none;
 }
 
 #forLargeScreen {
@@ -277,7 +337,7 @@ input.SwitchCheckBox:checked + .Slider:before {
 
 .link {
     opacity: 80%;
-    font-size:0.4em;
+    font-size: 0.4em;
     display: inline;
 }
 
@@ -287,6 +347,14 @@ input.SwitchCheckBox:checked + .Slider:before {
 }
 
 @media screen and (max-width: 720px) {
+    .forSmallScreen {
+        display: inline-block;
+    }
+
+    #videoList {
+        width: 100%;
+        margin: 5px;
+    }
     #forLargeScreen {
         display: none;
     }
@@ -301,12 +369,13 @@ input.SwitchCheckBox:checked + .Slider:before {
 
     .main {
         width: 100vw;
-        height: 92vh;
+        height: calc(92.5vh - 0.1px);
         background-color: #f2f2f2;
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
         font-family: "LXGWFasmartGothic";
+        /* overscroll-behavior: contain; */
     }
 
     .menu {
@@ -338,14 +407,18 @@ input.SwitchCheckBox:checked + .Slider:before {
     }
 
     .videoMain {
-        padding: 0em;
-        width: 90%;
-        margin: 0px auto;
+        padding: 1em 0;
+        /* width: 90%; */
+        /* margin: 0 auto; */
+        /* overscroll-behavior: contain; */
     }
     .videoCard {
         width: 48%;
         max-width: 230px;
         margin: 2px;
+    }
+    footer {
+        padding: 5px;
     }
 }
 
@@ -364,6 +437,14 @@ input.SwitchCheckBox:checked + .Slider:before {
         filter: invert(1) hue-rotate(180deg);
     } */
 
+    /* .linkBar::after {
+        background-image: linear-gradient(
+            to left,
+            #1c1c1c 0%,
+            rgba(0, 255, 255, 0) 25%
+        );
+    } */
+
     videoMain {
         background-color: #1c1c1c;
         color: #f2f2f2;
@@ -371,11 +452,11 @@ input.SwitchCheckBox:checked + .Slider:before {
 
     .videoMain img {
         opacity: 75%;
-        transition: 0.1s ease-in-out;
+        transition: 0.1s cubic-bezier(0.05, 0, 0, 1);
     }
     .videoMain img:hover {
         opacity: 100%;
-        transition: 0.1s ease-in-out;
+        transition: 0.1s cubic-bezier(0.05, 0, 0, 1);
     }
 }
 
@@ -413,4 +494,32 @@ input.SwitchCheckBox:checked + .Slider:before {
 .pageSwitcherText {
     transform: scale(1, 0.92);
     transform-origin: 0 0;
+}
+
+@media screen and (max-width: 390px) {
+    .videoCover img {
+        width: 100%;
+        border-radius: 0.46em;
+        border: 1px solid rgba(112, 112, 112, 0.4);
+        object-fit: cover;
+    }
+    .videoCover {
+        width: 45vw;
+    }
+    .videoTitle {
+        font-size: 1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 10em;
+    }
+}
+
+#RequestDalao {
+    background-color: #ffffff;
+    border-radius: 2px;
+    color: #000000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    padding: 7px;
+    font-size: 0.67em;
 }

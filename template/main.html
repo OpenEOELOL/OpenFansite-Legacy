@@ -3,6 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="referrer" content="never" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        />
         <title>EOELOL Project</title>
         <!-- style -->
         <link href="../src/main.css" rel="stylesheet" />
@@ -24,16 +28,35 @@
             html,
             body {
                 background-color: #f2f2f2;
-                animation: openAnimation 0.2s ease-in-out;
+                animation: openAnimation 0.2s cubic-bezier(0.05, 0, 0, 1);
                 animation-delay: 0.1s;
             }
         </style>
     </head>
     <body>
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-        />
+        <div class="floatMessage" id="WebkitWall">
+            <h1>注意</h1>
+            <p>
+                本页面使用了大量的 Webkit 内核专有属性，请使用 Safari、Chromium
+                内核的浏览器。并且不要使用 QQ 与微信内置的浏览器。
+            </p>
+            <i>问：可我看到了毛玻璃效果。</i
+            ><button id="cancelTheWebkitWall">
+                答：那么点这里 一天内不再提示</button
+            ><br />
+            <i>
+                问：可是，我用的是 Safari/Chromium
+                内核的浏览器，点上面那个按钮也关不掉啊。</i
+            >
+            答：把你的 JavaScript 打开。
+        </div>
+
+        <div class="floatMessage hide" id="BilibiliAlert">
+            <h1>将在 哔哩哔哩 打开视频</h1>
+            <p>您需要安装哔哩哔哩才可以正常使用本开关。</p>
+            <i>本消息将在五秒后关闭</i>
+        </div>
+
         <div class="main">
             <header class="menu">
                 <h1 id="menu_title">EOE.LOL</h1>
@@ -64,16 +87,49 @@
                     </label>
                     <p>在哔哩哔哩开启</p>
                 </div>
-                <div id="forLargeScreen"></div>
+                <div id="forLargeScreen">
+                    <div id="RequestDalao">
+                        <h3>求 Star！</h3>
+                        <p>
+                            点击视频列表上方的“开源”（链接）选项卡给本项目点个
+                            Star 吧！磕个头了！
+                        </p>
+                        <p>
+                            什么？你是 Python
+                            语言大佬/前端大佬？如果可以的话，欢迎你来帮助我们优化网站！
+                        </p>
+                    </div>
+                </div>
             </header>
             <main class="videoMain">
                 <nav class="linkBar">
-                    <a
-                        href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1W8BsfD&businessType=9&from=246610&biz=ka"
-                        >前往 QQ 频道<img src="./assets/link.svg" class="linkTip" alt="外部链接指示"></a
-                    >
-                    <a href="https://t.me/ElfofEra">前往 Telegram 频道<img src="./assets/link.svg" class="linkTip" alt="外部链接指示"></a>
-                    <a href="#disclaimer">免责声明</a>
+                    <div>
+                        <a href="#" aria-label="你可以左右滑动来切换选项" class="forSmallScreen">可左右滑动</a>
+                        <a href="#disclaimer" aria-label="前往 免责声明"
+                            >免责声明</a
+                        >
+                        <a
+                            href="https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&appChannel=share&inviteCode=1W8BsfD&businessType=9&from=246610&biz=ka"
+                            aria-label="前往 QQ 聊天软件频道群聊"
+                            >前往 QQ 频道<img
+                                src="./assets/link.svg"
+                                class="linkTip"
+                                alt="外部链接指示"
+                        /></a>
+                        <a
+                            href="https://t.me/ElfofEra"
+                            aria-label="前往 Telegram 聊天软件群聊"
+                            >前往 Telegram 群<img
+                                src="./assets/link.svg"
+                                class="linkTip"
+                                alt="外部链接指示"
+                        /></a>
+                        <a
+                            href="https://github.com/OpenEOELOL/OpenFansite"
+                            aria-label="前往 Github 开源页面"
+                            >开源</a
+                        >
+                    </div>
                 </nav>
                 <h1 id="listTitle">大家都在看</h1>
                 <div id="videoList">
@@ -105,7 +161,11 @@
                                 />
                             </div>
                             <div class="videoTitle">
-                                {{videoCard.videoTitle}}<img src="./assets/link.svg" class="linkTip" alt="外部链接指示">
+                                {{videoCard.videoTitle}}<img
+                                    src="./assets/link.svg"
+                                    class="linkTip"
+                                    alt="外部链接指示"
+                                />
                             </div>
                             <div class="videoAuthor">
                                 <img
@@ -143,22 +203,23 @@
                         下一页&nbsp;&gt;
                     </button>
                 </div>
-                <hr class="hr" data-content=""/>
+                <hr class="hr" data-content="页脚" />
                 <footer>
-                <div id="disclaimer">
-                    <h2>免责声明</h2>
-                    本页面提供的任何数据为哔哩哔哩抓取内容，我（站长
-                    KurisuCat）不承担因此内容带来的风险。<br />
-                    本站仅为个人性质的视频列表收录站点。从建站开始，从未有意标榜或冒充是“哔哩哔哩”官方网站或“EOE组合”官方网站。请认准“哔哩哔哩”官方网站
-                    <p class="link">（bilibili.com）</p>
-                    以及“EOE组合”官方账号
-                    <p class="link">
-                        （https://space.bilibili.com/2018113152）
-                    </p>
-                    <br>
-                    本站不保证指向外部的链接为安全链接，请仔细甄别。（此处的链接包括但不限于点击按钮后自动跳转到其他页面或直接点击链接）
-                </div>
-                <p id="copyright">&copy;2022 KurisuCat</p>
+                    <div id="disclaimer">
+                        <h2>免责声明</h2>
+                        本页面提供的任何数据为哔哩哔哩抓取内容，我（站长
+                        KurisuCat）不承担因此内容带来的风险。<br />
+                        本站仅为个人性质的视频列表收录站点。从建站开始，从未有意标榜或冒充是“哔哩哔哩”官方网站或“EOE组合”官方网站。请认准“哔哩哔哩”官方网站
+                        <p class="link">（bilibili.com）</p>
+                        以及“EOE组合”官方账号
+                        <p class="link">
+                            （https://space.bilibili.com/2018113152）
+                        </p>
+                        <br />
+                        本站不保证指向外部的链接为安全链接，请仔细甄别。（此处的链接包括但不限于点击按钮后自动跳转到其他页面或直接点击链接）
+                    </div>
+                    <hr class="hr" data-content="Copyright" />
+                    <p id="copyright">&copy;2022 KurisuCat</p>
                 </footer>
             </main>
         </div>
@@ -211,15 +272,45 @@
                 function () {
                     if (checkbox.checked) {
                         setCookie("OpenInApp", "true", 365);
-                        alert(
-                            "选项“在哔哩哔哩开启”会让你在哔哩哔哩应用里打开视频。\n前提是你需要安装了“哔哩哔哩”应用。"
-                        );
+                        document
+                            .getElementById("BilibiliAlert")
+                            .classList.remove("hide");
+                        setTimeout(function () {
+                            document
+                                .getElementById("BilibiliAlert")
+                                .classList.add("hide");
+                        }, 4000);
                     } else {
                         setCookie("OpenInApp", "false", 365);
                     }
                 },
                 false
             );
+            let linkBar = document.querySelector(".linkBar");
+            linkBar.addEventListener("wheel", (event) => {
+                event.preventDefault();
+                linkBar.scrollLeft += event.deltaY;
+            });
+            var cancelTheWebkitWall = document.getElementById(
+                "cancelTheWebkitWall"
+            );
+            var WebkitWall = document.getElementById("WebkitWall");
+            cancelTheWebkitWall.addEventListener(
+                "click",
+                function () {
+                    setCookie("WebkitWall", "true", 1);
+                    alert("本窗口一天内不再提示，请检查您的 UA 是否正常。");
+                    WebkitWall.classList.add("hide");
+                },
+                false
+            );
+            if (getCookie("WebkitWall") == "true") {
+                WebkitWall.classList.add("hide");
+            } else {
+                if (navigator.userAgent.includes("Safari")) {
+                    WebkitWall.classList.add("hide");
+                }
+            }
         </script>
     </body>
 </html>

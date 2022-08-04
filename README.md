@@ -1,5 +1,7 @@
 # OpenFansite
 
+[EOE.LOL 图标](./EOELOL.png)
+
 开源二创推送站点
 
 ## 关于 OpenFansite
@@ -16,7 +18,7 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 
 - **很慢**，尚未使用异步操作对速度进行优化。
 - **界面简陋**，通过对 YouTube 的界面抄袭以及不知道从哪儿抄过来的代码进行缝合。
-- **引用私人服务器**，通过对 KurisuCat 的服务器连接可能会获取到用户的部分数据。
+- **算法不友好**，对相同名字但不同事物的难以区分。
 
 ## 使用
 
@@ -40,6 +42,7 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 - 我的家人
 - Google、Stack Overflow、 菜鸟教程等网站
 - AsAsFans
+- [aFarkas / lazysizes](https://github.com/aFarkas/lazysizes)
 - 我喜欢的人
 - 我的朋友
 - 还有你们 🥰

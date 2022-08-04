@@ -1,6 +1,6 @@
 # OpenFansite
 
-[EOE.LOL 图标](./EOELOL.png)
+![EOE.LOL 图标](./EOELOL.png)
 
 开源二创推送站点
 

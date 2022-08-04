@@ -64,6 +64,5 @@ def main(request, page=1):
     pageResult = template.render(videoResult=data, pageNumber=pageNumberIndicator)
     return html(pageResult)
 
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, fast=True, auto_reload=True)

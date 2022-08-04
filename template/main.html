@@ -7,19 +7,51 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
         />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="EOELOL" />
+        <link rel="apple-touch-icon" href="../assets/images/icons/256.png" />
         <title>EOELOL Project</title>
         <!-- style -->
-        <link href="./src/main.css" rel="stylesheet" />
+        <link href="../src/main.css" rel="stylesheet" />
+        <link rel="manifest" href="../src/manifest.json" />
+        <meta name="theme-color" content="#375680" />
+        <!-- service worker -->
+        <script>
+            // 判断浏览器是否支持 Service Worker
+            if ("serviceWorker" in navigator) {
+                // 在 load 事件触发后注册 Service Worker，确保 Service Worker 的注册不会影响首屏速度
+                window.addEventListener("load", function () {
+                    // 注册 Service Worker
+                    navigator.serviceWorker
+                        .register("../sw.js")
+                        .then(function (registration) {
+                            // 注册成功
+                            console.log(
+                                "ServiceWorker registration successful with scope: ",
+                                registration.scope
+                            );
+                        })
+                        .catch(function (err) {
+                            // 注册失败 :(
+                            console.warn(
+                                "ServiceWorker registration failed: ",
+                                err
+                            );
+                        });
+                });
+            }
+        </script>
         <style>
             @media (prefers-color-scheme: dark) {
                 html,
                 body {
-                    background-color: #000000;
+                    background-color: #1c1c1c;
                 }
             }
             @keyframes openAnimation {
                 from {
-                    opacity: 0%;
+                    opacity: 50%;
                 }
                 to {
                     opacity: 100%;
@@ -28,8 +60,8 @@
             html,
             body {
                 background-color: #f2f2f2;
-                animation: openAnimation 0.2s cubic-bezier(0.05, 0, 0, 1);
-                animation-delay: 0.1s;
+                animation: openAnimation 0.25s cubic-bezier(0.05, 0, 0, 1);
+                /* animation-delay: 0.1s; */
             }
         </style>
     </head>
@@ -38,7 +70,8 @@
             <h1>注意</h1>
             <p>
                 本页面使用了大量的 Webkit 内核专有属性，请使用 Safari、Chromium
-                内核的浏览器。并且不要使用 QQ 与微信内置的浏览器。
+                内核或**最新的 Firefox（版本103）** 的浏览器。不要使用 QQ
+                、微信内置的浏览器。
             </p>
             <i>问：可我看到了毛玻璃效果。</i
             ><button id="cancelTheWebkitWall">
@@ -88,7 +121,15 @@
                     <p>在哔哩哔哩开启</p>
                 </div>
                 <div id="forLargeScreen">
-                    <div id="RequestDalao">
+                    <div id="FireFox" class="Card hide">
+                        <h3>Firefox?</h3>
+                        <p>
+                            尽管我们针对 Firefox
+                            已经修复了很多问题，如有问题请将 Firefox
+                            升级至最新版本
+                        </p>
+                    </div>
+                    <div id="RequestDalao" class="Card">
                         <h3>求 Star！</h3>
                         <p>
                             点击视频列表上方的“开源”（链接）选项卡给本项目点个
@@ -104,7 +145,12 @@
             <main class="videoMain">
                 <nav class="linkBar">
                     <div>
-                        <a href="#" aria-label="你可以左右滑动来切换选项" class="forSmallScreen">可左右滑动</a>
+                        <a
+                            href="#"
+                            aria-label="你可以左右滑动来切换选项"
+                            class="forSmallScreen"
+                            >可左右滑动</a
+                        >
                         <a href="#disclaimer" aria-label="前往 免责声明"
                             >免责声明</a
                         >
@@ -127,8 +173,11 @@
                         <a
                             href="https://github.com/OpenEOELOL/OpenFansite"
                             aria-label="前往 Github 开源页面"
-                            >开源</a
-                        >
+                            >开源<img
+                                src="./assets/link.svg"
+                                class="linkTip"
+                                alt="外部链接指示"
+                        /></a>
                     </div>
                 </nav>
                 <h1 id="listTitle">大家都在看</h1>
@@ -263,6 +312,34 @@
                 }
                 return "";
             }
+            function getExploreVersion() {
+                // 偷的思否 https://segmentfault.com/a/1190000007640795
+                var Sys = {};
+                var ua = navigator.userAgent.toLowerCase();
+                var s;
+                (s = ua.match(/rv:([\d.]+)\) like gecko/))
+                    ? (Sys.ie = s[1])
+                    : (s = ua.match(/msie ([\d\.]+)/))
+                    ? (Sys.ie = s[1])
+                    : (s = ua.match(/edge\/([\d\.]+)/))
+                    ? (Sys.edge = s[1])
+                    : (s = ua.match(/firefox\/([\d\.]+)/))
+                    ? (Sys.firefox = s[1])
+                    : (s = ua.match(/(?:opera|opr).([\d\.]+)/))
+                    ? (Sys.opera = s[1])
+                    : (s = ua.match(/chrome\/([\d\.]+)/))
+                    ? (Sys.chrome = s[1])
+                    : (s = ua.match(/version\/([\d\.]+).*safari/))
+                    ? (Sys.safari = s[1])
+                    : 0;
+                if (Sys.ie) return Sys.ie;
+                if (Sys.edge) return Sys.edge;
+                if (Sys.firefox) return Sys.firefox;
+                if (Sys.chrome) return Sys.chrome;
+                if (Sys.opera) return Sys.opera;
+                if (Sys.safari) return Sys.safari;
+                return "Unkonwn";
+            }
             var checkbox = document.getElementById("SwitchCheckBox");
             if (getCookie("OpenInApp") == "true") {
                 checkbox.checked = true;
@@ -286,7 +363,7 @@
                 },
                 false
             );
-            let linkBar = document.querySelector(".linkBar");
+            var linkBar = document.querySelector(".linkBar");
             linkBar.addEventListener("wheel", (event) => {
                 event.preventDefault();
                 linkBar.scrollLeft += event.deltaY;
@@ -299,7 +376,9 @@
                 "click",
                 function () {
                     setCookie("WebkitWall", "true", 1);
-                    alert("本窗口一天内不再提示，请检查您的 UA 是否正常。");
+                    alert(
+                        "本窗口一天内不再提示，如您浏览器为 Safari/Chromium 内核的浏览器,请检查您的 UA 是否正常。"
+                    );
                     WebkitWall.classList.add("hide");
                 },
                 false
@@ -307,9 +386,17 @@
             if (getCookie("WebkitWall") == "true") {
                 WebkitWall.classList.add("hide");
             } else {
-                if (navigator.userAgent.includes("Safari")) {
+                if (
+                    navigator.userAgent.includes("Safari") ||
+                    navigator.userAgent.includes("Edg") ||
+                    navigator.userAgent.includes("Chrome") ||
+                    navigator.userAgent.includes("Firefox")
+                ) {
                     WebkitWall.classList.add("hide");
                 }
+            }
+            if (navigator.userAgent.includes("Firefox")) {
+                document.getElementById("FireFox").classList.remove("hide");
             }
         </script>
     </body>

@@ -64,7 +64,7 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "author": #权重 计算是否一创 减少一创展示率
                 for BlackAuthor in authorBlackList:
                     if i[b].find(BlackAuthor) != -1:
-                        __weight_author = -1451
+                        __weight_author = -3576
                     else:
                         pass
             if b == "like":   #权重 计算点顶
@@ -86,7 +86,7 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "senddate":     #权重 计算时效
                 __sendTimeCalc = int(int(time.time()) - int(i[b]))
                 if __sendTimeCalc >= 432000:  #老的视频 5*24*60*60秒后（五天后）
-                    __weight_sendTime = -9999
+                    __weight_sendTime = -18834
                 if __sendTimeCalc <= 259200:  #新的视频
                     __weight_sendTime = 10
             if b == "play":         #权重 计算点阅
@@ -144,7 +144,7 @@ def makeJson(): #制作词典列表函数
     result.sort(key=lambda x: x["__weight"]) #按权重值排序 从小到大
     result.reverse()             #反向排序
     #del result[-20: -1]          #删除权重值倒数的几个视频
-    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区"]
+    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣"]
     #↑↑↑↑无关结果关键词 用于排除
     #print("列表长度：",len(result))
     for times in range(0,50): #反复循环过滤 50 遍无关视频 不知道为什么但是确实很有效果

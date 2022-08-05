@@ -196,7 +196,7 @@
                         </button>
                     </div-->
                     {% for videoCard in videoResult %}
-                    <div class="videoCard" role="button">
+                    <div class="videoCard" role="link">
                         <button
                             onclick="video('{{videoCard.av}}');"
                             aria-label="视频标题：{{videoCard.videoTitle}}"

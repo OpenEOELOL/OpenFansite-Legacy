@@ -43,7 +43,8 @@ def dataSpy(kw, pg): #数据捉虫函数
     #初始化一创作者列表
     authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO"]
     #↑↑↑↑↑↑↑   此列表要写 搜索 Result 的 author 字段，用于排除一创的视频。
-
+    recorderList = ["克里斯猫KurisuCat","哎呀米诺录播组"]
+    #↑↑↑↑↑↑  此列表要写录播man/切片man的ID，以便前端隐藏部分。
     for i in videoResult:     #处理搜索结果 计算权重
         __weight_random = random.randint(-10, 50)  # 初始化 随机权重
         __weight_like = 0     #初始化 点顶
@@ -102,6 +103,7 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "hit_columns":
                 if i[b] == ["author"]:
                     __filter = True
+            
         #↓↓↓↓ 计算权重
         __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like)
         print("权重值：", __weight)

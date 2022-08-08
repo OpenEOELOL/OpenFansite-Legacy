@@ -244,7 +244,7 @@ input.SwitchCheckBox:checked + .Slider:before {
     flex-direction: row;
     margin: 0 auto;
 }
-#OpenInApp p {
+#OpenInAppLabel {
     margin-left: 5px;
     margin-top: 1px;
 }

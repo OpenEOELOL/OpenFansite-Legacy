@@ -249,6 +249,16 @@ input.SwitchCheckBox:checked + .Slider:before {
     margin-top: 1px;
 }
 
+#ExcludeRecordManAndCutMan {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+#ExcludeRecordManAndCutManLabel {
+    margin-left: 5px;
+    margin-top: 1px;
+}
+
 .linkBar {
     overflow-x: scroll;
     /* width: 100vw; */

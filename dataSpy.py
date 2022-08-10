@@ -41,31 +41,31 @@ def dataSpy(kw, pg): #数据捉虫函数
             videoResult = a["data"]
 
     #初始化一创作者列表
-    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO"]
-    #↑↑↑↑↑↑↑   此列表要写 搜索 Result 的 author 字段，用于排除一创的视频。
-    recorderList = ["克里斯猫KurisuCat","哎呀米诺录播组"]
-    #↑↑↑↑↑↑  此列表要写录播man/切片man的ID，以便前端隐藏部分。
+    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者"]
     for i in videoResult:     #处理搜索结果 计算权重
         __weight_random = random.randint(-10, 50)  # 初始化 随机权重
-        __weight_like = 0     #初始化 点顶
-        __weight_coin = 0     #初始化 投币
-        __weight_collect = 0  #初始化 收藏
-        __weight_danmaku = 0  #初始化 弹幕
-        __weight_author = 0   #初始化 作者
-        __weight_sendTime = 0 #初始化 时效
-        __weight_click = 0    #初始化 点阅
-        __filter = False      #初始化 过滤
-        __weight = 0          #初始化 权重值
+        __weight_like = 0       #初始化 点顶
+        __weight_coin = 0       #初始化 投币
+        __weight_collect = 0    #初始化 收藏
+        __weight_danmaku = 0    #初始化 弹幕
+        __weight_author = 0     #初始化 作者
+        __weight_sendTime = 0   #初始化 时效
+        __weight_click = 0      #初始化 点阅
+        __filter = False        #初始化 过滤
+        __weight = 0            #初始化 权重值
+        __authorExclude = False #初始化 排除
         for b in i:           # 遍历  字典
             if b == "title":  # 消除  <em> 关键词标记
                 i[b] = i[b].replace('<em class="keyword">', "").replace('</em>', "")
                 print("标题：", i[b])
             if b == "pic":  # 加載縮略圖照片
                 i[b] = i[b]+"@544w_340h_1c"
-            if b == "author": #权重 计算是否一创 减少一创展示率
+            if b == "author": #判定 作者
                 for BlackAuthor in authorBlackList:
                     if i[b].find(BlackAuthor) != -1:
-                        __weight_author = -3576
+                        print("已排除并 __authorExclude 设置为真：", i[b])
+                        __weight_author = -9765
+                        __authorExclude = True
                     else:
                         pass
             if b == "like":   #权重 计算点顶
@@ -107,7 +107,8 @@ def dataSpy(kw, pg): #数据捉虫函数
         #↓↓↓↓ 计算权重
         __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like)
         print("权重值：", __weight)
-        i.update({"__weight": __weight, "__filter": __filter})  # 在视频结果列表中插入权重
+        # 在视频结果列表中插入权重
+        i.update({"__weight": __weight, "__filter": __filter, "__authorExclude": __authorExclude})
         i = videoResult                  #将缓存中的列表赋给结果 并返回
     return videoResult
 
@@ -146,7 +147,7 @@ def makeJson(): #制作词典列表函数
     result.sort(key=lambda x: x["__weight"]) #按权重值排序 从小到大
     result.reverse()             #反向排序
     #del result[-20: -1]          #删除权重值倒数的几个视频
-    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000"]
+    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000", "非那米诺"]
     #↑↑↑↑无关结果关键词 用于排除
     #print("列表长度：",len(result))
     for times in range(0,50): #反复循环过滤 50 遍无关视频 不知道为什么但是确实很有效果

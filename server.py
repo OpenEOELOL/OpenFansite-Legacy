@@ -17,7 +17,7 @@ templateApi = templateEnvironment.get_template('api.json')  # 设置 API 模板
 
 @app.route("/<page:int>")
 @app.get("/")
-def main(request, page=1):
+async def main(request, page=1):
     ################ 获取文件
     videoResult = []
     with open('result.json', 'r') as f:
@@ -28,11 +28,11 @@ def main(request, page=1):
     f.close()
     ################ 获取文件
     pages = page
-    pageEnd = pages*20
-    pageStart = pageEnd-19
+    pageEnd = pages*40
+    pageStart = pageEnd-39
 
     videoResult = videoResult[pageStart-1:pageEnd]
-
+    HideOrNot = ""
     videoList = videoResult
     data = []
     for videoCard in videoList:
@@ -45,13 +45,17 @@ def main(request, page=1):
                 videoCover = videoCard[i]
             if i == "author":
                 videoAuthor = videoCard[i]
+            if i == "__authorExclude":
+                if videoCard[i]:
+                    HideOrNot = "ItIsRecoder"
             if i == "play":
                 videoPlay = videoCard[i]
             # if i == "coin":
             #     videoCoin = videoCard[i]
             #videoInfo = """<img src="./assets/播放.svg" alt="播放量图标">""" + videoPlay
         data.append({"videoTitle": videoTitle, "av": str(videoAv),
-                    "videoCover": videoCover, "videoAuthor": videoAuthor})
+                    "videoCover": videoCover, "videoAuthor": videoAuthor, "HideOrNot": HideOrNot})
+        HideOrNot = ""
     if pages == 0:
         data.append({"videoTitle": "【MV】保加利亚妖王AZIS视频合辑",
                     "av": 170001,
@@ -68,7 +72,7 @@ def main(request, page=1):
 
 @app.route("/api/<page:int>")
 @app.get("/api")
-def api(request, page=1):
+async def api(request, page=1):
     ################ 获取文件
     videoResult = []
     with open('result.json', 'r') as f:
@@ -96,13 +100,15 @@ def api(request, page=1):
                 videoCover = videoCard[i]
             if i == "author":
                 videoAuthor = videoCard[i]
+            if i == "__authorExclude":
+                __authorExclude = videoCard[i]
             if i == "play":
                 videoPlay = videoCard[i]
             # if i == "coin":
             #     videoCoin = videoCard[i]
             #videoInfo = """<img src="./assets/播放.svg" alt="播放量图标">""" + videoPlay
         data.append({"videoTitle": videoTitle, "av": str(videoAv),
-                    "videoCover": videoCover, "videoAuthor": videoAuthor})
+                    "videoCover": videoCover, "videoAuthor": videoAuthor, "HideOrNot": __authorExclude})
     if pages == 0:
         data.append({"videoTitle": "【MV】保加利亚妖王AZIS视频合辑",
                     "av": 170001,

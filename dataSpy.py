@@ -41,9 +41,9 @@ def dataSpy(kw, pg): #数据捉虫函数
             videoResult = a["data"]
 
     #初始化一创作者列表
-    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者"]
+    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者", "露早老公", "烂活机器人", "长崎濑野kira"]
     for i in videoResult:     #处理搜索结果 计算权重
-        __weight_random = random.randint(-10, 50)  # 初始化 随机权重
+        __weight_random = random.randint(-10, 200)  # 初始化 随机权重
         __weight_like = 0       #初始化 点顶
         __weight_coin = 0       #初始化 投币
         __weight_collect = 0    #初始化 收藏
@@ -83,23 +83,23 @@ def dataSpy(kw, pg): #数据捉虫函数
             #     else:
             #         __weight_coin = i[b]
             if b == "favorites":    #权重 计算收藏
-                __weight_collect = i[b] * 0.2
+                __weight_collect = i[b] * 0.3
             if b == "senddate":     #权重 计算时效
                 __sendTimeCalc = int(int(time.time()) - int(i[b]))
                 if __sendTimeCalc >= 432000:  #老的视频 5*24*60*60秒后（五天后）
-                    __weight_sendTime = -18834
+                    __weight_sendTime = -345080
                 if __sendTimeCalc <= 259200:  #新的视频
-                    __weight_sendTime = 10
+                    __weight_sendTime = 99999
             if b == "play":         #权重 计算点阅
                 if i[b] <= 2000:
-                    __weight_click = 9 + i[b] * 0.7
+                    __weight_click = ( 12 + i[b] ) * 1.2
                 elif i[b] <= 30000:
-                    __weight_click = 5 + i[b] * 0.5
+                    __weight_click = ( 9 + i[b] ) * 0.7
                 else:
-                    __weight_click = 0 + i[b] * 0.09
+                    __weight_click = ( 1 + i[b] ) * 0.06
             if b == "video_review": #权重 计算弹幕
                 if i[b] <= 100:
-                    __weight_danmaku = i[b] * 0.2
+                    __weight_danmaku = i[b] * 0.5
             if b == "hit_columns":
                 if i[b] == ["author"]:
                     __filter = True
@@ -147,7 +147,7 @@ def makeJson(): #制作词典列表函数
     result.sort(key=lambda x: x["__weight"]) #按权重值排序 从小到大
     result.reverse()             #反向排序
     #del result[-20: -1]          #删除权重值倒数的几个视频
-    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000", "非那米诺"]
+    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000", "非那米诺", "梦中の游乐园", "坦克世界"]
     #↑↑↑↑无关结果关键词 用于排除
     #print("列表长度：",len(result))
     for times in range(0,50): #反复循环过滤 50 遍无关视频 不知道为什么但是确实很有效果

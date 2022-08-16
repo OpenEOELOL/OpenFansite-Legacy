@@ -41,7 +41,7 @@ def dataSpy(kw, pg): #数据捉虫函数
             videoResult = a["data"]
 
     #初始化一创作者列表
-    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者", "露早老公", "烂活机器人", "长崎濑野kira"]
+    authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者", "露早老公", "烂活机器人", "长崎濑野kira", "我不该拥有炽热的梦", "北安不是北门安保"]
     for i in videoResult:     #处理搜索结果 计算权重
         __weight_random = random.randint(-10, 200)  # 初始化 随机权重
         __weight_like = 0       #初始化 点顶
@@ -118,7 +118,7 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "hit_columns":
                 if i[b] == ["author"]:
                     __filter = True
-            
+
         #↓↓↓↓ 计算权重
         __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like)
         #print("权重值：", __weight)
@@ -163,7 +163,7 @@ def makeJson(): #制作词典列表函数
     result.sort(key=lambda x: x["__weight"]) #按权重值排序 从小到大
     result.reverse()             #反向排序
     #del result[-20: -1]          #删除权重值倒数的几个视频
-    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000", "非那米诺", "梦中の游乐园", "坦克世界"]
+    BlockWord = ["多米诺", "凇子M", "黑猫与白喵", "米诺地尔", "明日方舟早露", "明日方舟", "舒舒酷北北", "贤宝宝Baby", "多米诺骨牌", "微物米诺", "天天打龟", "六弦阁徒_HTT", "街头社区", "艾森巴赫", "撒旦女巫的诱惑", "锤子game", "三千亿光年", "不知所措的周余", "十一点睡粥老师", "少喝运动多奶茶", "tsuiruaku", "战舰世界", "元首的渣渣", "菲尔米诺Bobby", "青衣之冇", "账号注销9999000", "非那米诺", "梦中の游乐园", "坦克世界", "林以恒的小星星", "ZeeNuNew", "无期迷途", "早露", "Alex43801"]
     #↑↑↑↑无关结果关键词 用于排除
     #print("列表长度：",len(result))
     for times in range(0,10): #反复循环过滤 50 遍无关视频 不知道为什么但是确实很有效果

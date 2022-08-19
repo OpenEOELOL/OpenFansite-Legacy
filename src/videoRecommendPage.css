@@ -1,0 +1,612 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 17px;
+}
+
+button {
+    cursor: pointer;
+}
+
+::-moz-selection {
+    background: #1c1c1c;
+    color: #f2f2f2;
+}
+
+::selection {
+    background: #1c1c1c;
+    color: #f2f2f2;
+}
+
+@font-face {
+    font-family: "LXGWFasmartGothic";
+    src: url("../assets/font/霞鹭尚智黑.woff2") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.hide {
+    display: none;
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-family: "LXGWFasmartGothic";
+    color: #1c1c1c;
+}
+
+.menu {
+    background-color: #1c1c1c;
+    width: 30%;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    position: relative;
+}
+
+/* .menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100vh;
+    background: transparent
+        url("http://popii.test.upcdn.net/2022/07/21/62d8d3b812fff.png") center
+        center no-repeat;
+    filter: blur(5px);
+    z-index: -1;
+    background-size: cover;
+} */
+#menu_title {
+    margin: 0.5em;
+    text-align: center;
+    font-weight: 700;
+    font-size: 4em;
+}
+
+.menu_option {
+    width: 100%;
+    background-color: #777777;
+    padding: 0.5em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    text-align: center;
+    font-size: 1.3em;
+    color: #f2f2f2;
+}
+
+#popular {
+    background-color: #ff63ab;
+}
+
+#goodFanmade {
+    background-color: #7ab3ff;
+}
+
+#Setting {
+    background-color: #0081cf;
+    font-size: 1.6em;
+}
+
+.videoMain {
+    padding: 2em;
+    background-color: #f2f2f2;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#listTitle {
+    margin-top: 0.16em;
+    text-align: left;
+    font-weight: 500;
+    font-size: 3em;
+}
+
+.videoCard {
+    width: 50%;
+    max-width: 210px;
+    margin-right: 7px;
+}
+
+.videoCover {
+    width: 100%;
+}
+
+.videoCover img {
+    width: 100%;
+    border-radius: 0.46em;
+    border: 1px solid rgba(112, 112, 112, 0.4);
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.main button {
+    border: 1px solid rgba(0, 0, 0, 0);
+    font-family: "LXGWFasmartGothic";
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.videoCard button {
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 0.46em;
+    box-shadow: 0 0 0.4em rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
+    text-align: left;
+}
+
+#videoList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    flex-grow: 1;
+    /* background-color: red; */
+    width: 100%;
+}
+
+.videoTitle {
+    font-size: 1.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 10em;
+}
+
+.videoAuthor img {
+    height: 12px;
+    margin-bottom: -1px;
+}
+
+.videoInfo img {
+    height: 12px;
+    margin-bottom: -1px;
+}
+
+/* 开关组件 */
+.Switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 22px;
+}
+
+/* 隐藏原始 checkbox */
+.Switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* 开关钮 */
+.Slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.2s cubic-bezier(0.05, 0, 0, 1);
+}
+
+.Slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 26px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.2s cubic-bezier(0.05, 0, 0, 1);
+}
+
+input.SwitchCheckBox:checked + .Slider {
+    background-color: rgba(48, 117, 255, 1);
+    box-shadow: 0 0 16px rgba(48, 117, 255, 0.7);
+}
+
+input.SwitchCheckBox:hover + .Slider {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+input.SwitchCheckBox:checked:hover + .Slider {
+    background-color: rgba(48, 117, 255, 1);
+    box-shadow: 0 0 16px rgba(48, 117, 255, 0.7);
+}
+
+input.SwitchCheckBox:checked + .Slider:before {
+    transform: translateX(26px);
+}
+
+/* 开关圆角 */
+.Slider.Round {
+    border-radius: 0.3em;
+}
+
+.Slider.Round:before {
+    border-radius: 0.2em;
+}
+
+#OpenInApp {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+#OpenInAppLabel {
+    margin-left: 5px;
+    margin-top: -4px;
+}
+
+#ExcludeRecordManAndCutMan {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+#ExcludeRecordManAndCutManLabel {
+    margin-left: 5px;
+    margin-top: -4px;
+}
+
+.linkBar {
+    overflow-x: scroll;
+    /* width: 100vw; */
+    height: calc(8px + 6px + 1em + 5px);
+    padding: 7px 0px;
+    scroll-behavior: smooth;
+}
+
+.floatMessage {
+    text-align: center;
+    background-color: rgba(236, 236, 236, 0.8);
+    border-radius: 7px;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1em;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
+    color: #1f1f1f;
+    z-index: 9;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.floatDialog {
+    /* text-align: center; */
+    background-color: rgba(28, 28, 28, 0.8);
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1em;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
+    color: #f2f2f2;
+    z-index: 9;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    font-size: 1.3em;
+}
+
+.close {
+    font-size: 200%;
+    font-weight: 700;
+    transition: 0.2s cubic-bezier(0.05, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0);
+    border: 0 rgba(0, 0, 0, 0);
+    color: rgb(255, 106, 106);
+}
+
+.close:hover {
+    transform: scale(1.2) rotate(-0.01turn);
+    color: rgb(255, 65, 12);
+}
+
+#cancelTheWebkitWall {
+    background-color: rgba(0, 0, 0, 0);
+    color: #f2f2f2;
+    border: 1px solid #f2f2f2;
+    transition: border 0.2s cubic-bezier(0.05, 0, 0, 1);
+}
+
+#cancelTheWebkitWall:hover {
+    background-color: rgba(0, 0, 0, 0);
+    color: #f2f2f2;
+    border: 5px solid #f2f2f2;
+}
+
+.linkBar::-webkit-scrollbar {
+    display: none;
+}
+
+.linkBar div {
+    white-space: nowrap;
+}
+
+.linkBar a {
+    background-color: #f2f2f2;
+    border: 1px solid #d9d9d9;
+    color: #030303;
+    padding: 8px 12px;
+    transition: background-color 0.5s cubic-bezier(0.05, 0, 0, 1);
+    border-radius: 50px;
+    font-size: 0.8em;
+    text-decoration: none;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.linkTip {
+    height: 1em;
+    transform: translateY(6%);
+    display: inline;
+}
+
+.linkBar a:hover {
+    background-color: #e5e5e5;
+    border: 1px solid #cecece;
+}
+
+.linkBar .pressed {
+    background-color: #030303;
+    border: 1px solid #030303;
+    color: #ffffff;
+}
+
+.linkBar .pressed:hover {
+    background-color: #030303;
+    border: 1px solid #030303;
+}
+
+.forSmallScreen {
+    display: none;
+}
+
+#forLargeScreen {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}
+
+.link {
+    opacity: 80%;
+    font-size: 0.4em;
+    display: inline;
+}
+
+#copyright {
+    opacity: 50%;
+    width: 100%;
+}
+
+@media screen and (max-width: 720px) {
+    .forSmallScreen {
+        display: inline-block;
+    }
+
+    #videoList {
+        width: 100%;
+        margin: 5px;
+    }
+    #forLargeScreen {
+        display: none;
+    }
+    #listTitle {
+        margin-top: 0.16em;
+        text-align: left;
+        font-weight: 500;
+        font-size: 2em;
+        margin-left: 7px;
+        margin-bottom: 7px;
+    }
+
+    .main {
+        width: 100vw;
+        height: calc(100% - 0.1px);
+        background-color: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        font-family: "LXGWFasmartGothic";
+        /* overscroll-behavior: contain; */
+    }
+
+    .menu {
+        background-color: #1c1c1c;
+        width: 100%;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .menu_option {
+        width: 100%;
+        background-color: #777777;
+        padding: 0em;
+        margin-top: 0em;
+        margin-bottom: 0em;
+        text-align: center;
+        font-size: 1.3em;
+        color: #f2f2f2;
+    }
+
+    #menu_title {
+        margin: 0.5em;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1em;
+    }
+
+    #Setting {
+        background-color: #0081cf;
+        height: 100%;
+        font-size: 1.6em;
+    }
+
+    .videoMain {
+        padding: 1em 0;
+        /* width: 90%; */
+        /* margin: 0 auto; */
+        /* overscroll-behavior: contain; */
+    }
+    .videoCard {
+        width: 48%;
+        max-width: 230px;
+        margin: 2px;
+    }
+    footer {
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #menu_title {
+        margin: 0.5em;
+        text-align: center;
+        font-weight: 700;
+        font-size: 2em;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    /* .videoMain,
+    img {
+        filter: invert(1) hue-rotate(180deg);
+    } */
+
+    /* .linkBar::after {
+        background-image: linear-gradient(
+            to left,
+            #1c1c1c 0%,
+            rgba(0, 255, 255, 0) 25%
+        );
+    } */
+
+    videoMain {
+        background-color: #1c1c1c;
+        color: #f2f2f2;
+    }
+
+    .videoMain img {
+        opacity: 75%;
+        transition: 0.1s cubic-bezier(0.05, 0, 0, 1);
+    }
+    .videoMain img:hover {
+        opacity: 100%;
+        transition: 0.1s cubic-bezier(0.05, 0, 0, 1);
+    }
+}
+
+.hr {
+    /* 这里感谢一下张老师 https://www.zhangxinxu.com/wordpress/2021/05/css-html-hr/*/
+    color: #1c1c1c;
+    border: 0;
+    font-size: 12px;
+    padding: 1em 0;
+    position: relative;
+}
+.hr::before {
+    content: attr(data-content);
+    position: absolute;
+    padding: 0 1ch;
+    line-height: 1px;
+    border: solid #1c1c1c;
+    border-width: 0 99vw;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    /* for 不支持fit-content浏览器 */
+    white-space: nowrap;
+    /*left: 50%;*/
+    left: 8%;
+    transform: translateX(-50%);
+}
+
+#pageSwitcher {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 5px;
+    /* justify-content: center; */
+}
+
+button.pageSwitcherText {
+    transform: scale(1, 0.86);
+    transform-origin: 0 0;
+    padding: 6px;
+    background: #ffffff;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+@media screen and (max-width: 390px) {
+    .videoCover img {
+        width: 100%;
+        border-radius: 0.46em;
+        border: 1px solid rgba(112, 112, 112, 0.4);
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .videoCover {
+        width: 45vw;
+    }
+    .videoTitle {
+        font-size: 1em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 10em;
+    }
+}
+
+.Card {
+    background-color: #ffffff;
+    border-radius: 2px;
+    color: #000000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    padding: 7px;
+    font-size: 0.67em;
+    margin: 2px;
+}
+
+@media all and (display-mode: fullscreen) {
+    .main {
+        width: 100vw;
+        height: calc(100vw - 0.1px);
+        background-color: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        font-family: "LXGWFasmartGothic";
+    }
+}

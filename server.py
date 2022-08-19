@@ -28,8 +28,8 @@ async def main(request, page=1):
     f.close()
     ################ 获取文件
     pages = page
-    pageEnd = pages*40
-    pageStart = pageEnd-39
+    pageEnd = pages*50
+    pageStart = pageEnd-49
 
     videoResult = videoResult[pageStart-1:pageEnd]
     HideOrNot = ""

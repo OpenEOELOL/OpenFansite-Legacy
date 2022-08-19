@@ -26,7 +26,10 @@ def videoSearch(kw, pg, printOrNot=True): #视频搜索函数
     if printOrNot:
         print("搜索视频，关键词“", kw, "”，第", pg, "页。")
     #↓ 调用 API 搜索（由 bilibili-api-python 库提供）赋给结果变量 并返回
-    result = sync(search.web_search(keyword=kw, page=pg))
+    try:
+        result = sync(search.web_search(keyword=kw, page=pg))
+    except:
+        print("连接错误")
     return result
 
 def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数

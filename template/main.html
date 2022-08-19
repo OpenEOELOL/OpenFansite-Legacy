@@ -70,20 +70,7 @@
 </head>
 
 <body>
-    <div class="floatMessage hide" id="WebkitWall">
-        <h1>注意</h1>
-        <p>
-            本页面使用了大量的 Webkit 内核专有属性，请使用 Safari、Chromium
-            内核或**最新的 Firefox（版本103）** 的浏览器。不要使用 QQ
-            、微信内置的浏览器。
-        </p>
-        <i>问：可我看到了毛玻璃效果。</i><button id="cancelTheWebkitWall">
-            答：那么点这里 一天内不再提示</button><br />
-        <i>
-            问：可是，我用的是 Safari/Chromium
-            内核的浏览器，点上面那个按钮也关不掉啊。</i>
-        答：把你的 JavaScript 打开。
-    </div>
+
 
     <div class="floatMessage hide" id="BilibiliAlert">
         <h1>将在 哔哩哔哩 打开视频</h1>
@@ -123,6 +110,12 @@
                         尽管我们针对 Firefox
                         已经修复了很多问题，如有问题请将 Firefox
                         升级至最新版本
+                    </p>
+                </div>
+                <div id="UnsupportBrowser" class="Card">
+                    <h3 style="color: #ff3300;">本浏览器可能不受支持</h3>
+                    <p>
+                        请使用更先进的浏览器，如 Chrome、Edge 及 Firefox（100+）。<br>如过你就在用这些浏览器，请检查更新，或检查 JavaScript 有没有打开。
                     </p>
                 </div>
                 <div id="RequestDalao" class="Card">
@@ -223,7 +216,7 @@
                         </label>
                         <label for="ExcludeCheckBox" id="ExcludeRecordManAndCutManLabel">排除录播和切片</label><br>
                     </div>
-                    <i>如果你的二创被拦截了下来请前往开源项目提 Pull request 将在排除名单里的自己删除，文件位于 <code>./authorBlackList.txt</code> 里。文件为 UTF-8 编码。</code></i>
+                    <i>如果你的二创被拦截了下来请前往开源项目提 Pull request 将在排除名单里的自己删除，文件位于 <code>./authorBlackList.txt</code> 里。文件为 UTF-8 编码。</i>
                 </div>
                 <hr class="hr" data-content="Copyright" />
                 <p id="copyright">&copy;2022 KurisuCat</p>
@@ -359,45 +352,27 @@
             },
             false
         );
-        var linkBar = document.querySelector(".linkBar");
-        linkBar.addEventListener("wheel", (event) => {
-            event.preventDefault();
-            linkBar.scrollLeft += event.deltaY;
-        });
-        var cancelTheWebkitWall = document.getElementById(
-            "cancelTheWebkitWall"
-        );
-        var WebkitWall = document.getElementById("WebkitWall");
-        cancelTheWebkitWall.addEventListener(
-            "click",
-            function () {
-                setCookie("WebkitWall", "true", 1);
-                alert(
-                    "本窗口一天内不再提示，如您浏览器为 Safari/Chromium 内核的浏览器,请检查您的 UA 是否正常。"
-                );
-                WebkitWall.classList.add("hide");
-            },
-            false
-        );
-        if (getCookie("WebkitWall") == "true") {
-            WebkitWall.classList.add("hide");
-        } else {
-            if (
+        if (
                 navigator.userAgent.includes("Safari") ||
                 navigator.userAgent.includes("Edg") ||
                 navigator.userAgent.includes("Chrome") ||
                 navigator.userAgent.includes("Firefox")
             ) {
-                WebkitWall.classList.add("hide");
+                document.getElementById("UnsupportBrowser").classList.add("hide");
             }
             else
             {
-                WebkitWall.classList.remove("hide");
+                document.getElementById("UnsupportBrowser").classList.remove("hide");
             }
-        }
+        
         if (navigator.userAgent.includes("Firefox")) {
             document.getElementById("FireFox").classList.remove("hide");
         }
+                var linkBar = document.querySelector(".linkBar");
+        linkBar.addEventListener("wheel", (event) => {
+            event.preventDefault();
+            linkBar.scrollLeft += event.deltaY;
+        });
     </script>
 </body>
 

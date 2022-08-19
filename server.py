@@ -35,6 +35,7 @@ async def main(request, page=1):
     HideOrNot = ""
     videoList = videoResult
     data = []
+    
     for videoCard in videoList:
         for i in videoCard:
             if i == "title":
@@ -90,6 +91,7 @@ async def api(request, page=1):
 
     videoList = videoResult
     data = []
+    
     for videoCard in videoList:
         for i in videoCard:
             if i == "title":

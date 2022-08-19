@@ -162,7 +162,7 @@
                         </button>
                     </div-->
                 {% for videoCard in videoResult %}
-                <div class="videoCard {{videoCard.HideOrNot}}" role="link">
+                <div class="videoCard {{videoCard.HideOrNot}}" role="link" title="{{videoCard.videoCover}}">
                     <button onclick="video('{{videoCard.av}}');" aria-label="视频标题：{{videoCard.videoTitle}}" role="link">
                         <div class="videoCover">
                             <img src="{{videoCard.videoCover}}" alt="" loading="lazy" />

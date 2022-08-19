@@ -1,20 +1,22 @@
 # -*- coding: UTF-8 -*-
 
 #引入模块
-from bilibili_api import sync, search, settings
+from bilibili_api import sync, search, settings, video 
 from collections import OrderedDict
 import json
 import random
 import time
 
+#settings.proxy = "http://ProxyAddress.cat"  # 填写代理地址
+#settings.proxy = "http://account:password@ProxyAddress.cat"  # 如果需要账号以及密码
 
-def wait(): #“等等陈睿”函数
+
+def wait(sec=1):  #“等等陈睿”函数 这里填等待秒或在调用函数时填写 太快会被 -412 拦截
     """
     等等陈睿
         太快会被陈睿 Gank，特此写函数。
     """
 
-    sec = 1.88 #这里填等待秒 太快会被 -412 拦截
     time.sleep(sec)
 
 def videoSearch(kw, pg, printOrNot=True): #视频搜索函数
@@ -27,7 +29,7 @@ def videoSearch(kw, pg, printOrNot=True): #视频搜索函数
     result = sync(search.web_search(keyword=kw, page=pg))
     return result
 
-def dataSpy(kw, pg): #数据捉虫函数
+def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
     """
     数据捉虫
         此函数用来调取哔哩哔哩搜索 API 的返回 Json。
@@ -51,17 +53,19 @@ def dataSpy(kw, pg): #数据捉虫函数
     #authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者", "露早老公", "烂活机器人", "长崎濑野kira", "我不该拥有炽热的梦", "北安不是北门安保"]
     for i in videoResult:     #处理搜索结果 计算权重
         __weight_random = random.randint(-10, 200)  # 初始化 随机权重
-        __weight_like = 0       #初始化 点顶
-        __weight_coin = 0       #初始化 投币
-        __weight_collect = 0    #初始化 收藏
-        __weight_danmaku = 0    #初始化 弹幕
-        __weight_author = 0     #初始化 作者
-        __weight_sendTime = 0   #初始化 时效
-        __weight_click = 0      #初始化 点阅
-        __filter = False        #初始化 过滤
-        __weight = 0            #初始化 权重值
-        __authorExclude = False #初始化 排除
-        __debug = ""            #初始化 测试变量
+        __weight_like = 0        #初始化 点顶
+        __weight_coin = 0        #初始化 投币
+        __weight_collect = 0     #初始化 收藏
+        __weight_danmaku = 0     #初始化 弹幕
+        __weight_author = 0      #初始化 作者
+        __weight_sendTime = 0    #初始化 时效
+        __weight_click = 0       #初始化 点阅
+        __weight_cooperation = 0 #初始化 联合
+        __weight_vertical = 0    #初始化 竖屏
+        __filter = False         #初始化 过滤
+        __weight = 0             #初始化 权重值
+        __authorExclude = False  #初始化 排除
+        __debug = ""             #初始化 测试变量
         for b in i:           # 遍历  字典
             if b == "title":  # 消除  <em> 关键词标记
                 i[b] = i[b].replace('<em class="keyword">', "").replace('</em>', "")
@@ -87,14 +91,6 @@ def dataSpy(kw, pg): #数据捉虫函数
                 else:
                     __weight_like = i[b] * 0.18
                     __debug = __debug+"高顶率。"
-            if b == "coin":   #权重 计算投币 妈的个byd写半天发现返回的信息根本没有投币数
-                __weight_coin = 0
-            #     if __like <= i[b]:
-            #         __weight_coin = i[b] * 1.4
-            #     elif i[b] >= 86:
-            #         __weight_coin = i[b] * 0.5
-            #     else:
-            #         __weight_coin = i[b]
             if b == "favorites":    #权重 计算收藏
                 __weight_collect = i[b] * 0.3
                 __debug = __debug+"收藏:"+str(i[b])+"。"
@@ -126,9 +122,38 @@ def dataSpy(kw, pg): #数据捉虫函数
             if b == "hit_columns":
                 if i[b] == ["author"]:
                     __filter = True
+            if moreInfomation:
+                if b == "aid":
+                    videoInfo = sync(video.Video(aid=i[b]).get_info())
+                    if videoInfo["copyright"] == 2:
+                        __authorExclude = True
+                    原 = videoInfo['stat']
+                    for 批 in 原:
+                        if 批 == 'like':
+                            __like = 原[批]
+                    for 批 in 原:
+                        if 批 == 'coin':
+                            if __like <= 原[批]:
+                                __weight_coin = 原[批] * 1.4
+                            elif i[b] >= 86:
+                                __weight_coin = 原[批] * 0.3
+                            else:
+                                __weight_coin = 原[批]
+                    农 = videoInfo['rights']
+                    for 批 in 农:
+                        if 批 == 'is_cooperation':
+                            __weight_cooperation = 200 + (__weight_coin / 2)
+                    Ａ = videoInfo['dimension']
+                    for 除 in Ａ:
+                        if 除 == 'width':
+                            __videoWidth = Ａ[除]
+                        if 除 == 'height':
+                            __videoHeight = Ａ[除]
+                    if __videoWidth < __videoHeight:
+                        __weight_vertical = -1000
 
         #↓↓↓↓ 计算权重
-        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like)
+        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like + __weight_vertical)
         #print("权重值：", __weight)
         # 在视频结果列表中插入权重
         __debug = ""
@@ -137,7 +162,7 @@ def dataSpy(kw, pg): #数据捉虫函数
     return videoResult
 
 
-def MutiPageResult(keyword): #多页结果整合函数
+def MutiPageResult(keyword, moreInfomation=False):  # 多页结果整合函数
     """
     多页结果整合函数 需要输入关键词（str）
     """
@@ -148,21 +173,21 @@ def MutiPageResult(keyword): #多页结果整合函数
                     #哔哩哔哩最多的结果页数是 50 页，所以请不要大于这个值。不要设置为 1 页，不然什么都不会被获取到。
     page = maxPage if page >= maxPage else page  # 若页数大于 maxPage 页，最大获取 maxPage 页。可在上面设置。
     for i in range(1, page): #遍历搜索的所有页数
-        result = result + dataSpy(keyword, i)
+        result = result + dataSpy(keyword, i, moreInfomation)
         wait()
     #print(result)
     return result
 
 
-def makeJson(): #制作词典列表函数
+def makeJson(nameList=["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"], moreInfomation=False):  # 制作词典列表函数
     """
     制作词典列表函数
     """
     
     result = []                  #初始化 结果列表
-    nameList = ["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"] #初始化 搜索关键词列表
+    #nameList = ["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"] #初始化 搜索关键词列表
     for i in nameList:           #遍历 搜索关键词列表
-        result = result + MutiPageResult(i)
+        result = result + MutiPageResult(i, moreInfomation)
     Order = OrderedDict()        #初始化 -> 词典排序函数
     for item in result:          #去重 搜索关键词列表
         Order.setdefault(item['bvid'], {**item, }) #设定 为 bvid 去重
@@ -215,13 +240,11 @@ def makeJson(): #制作词典列表函数
     print("\n\n列表长度：", len(result))
     return result
 
-result = makeJson()
-# resultJson = open("result.json", "w", encoding="utf-8")
-# resultJson.write(str(result))
-# resultJson.close()
 
 #此处参考 @Risk2 感谢：https://www.zhihu.com/question/67111152/answer/249259611
 #数据写入
+result = makeJson(["EOE", "露早", "米诺", "莞儿","柚恩", "虞莫"], True)
+#这里第一个参数填写关键词（字符串列表），第二个参数填写是否需要更精确的数据（布尔值），当然也会更慢。
 resultJson = open('result.json', 'w', encoding="utf-8")
 for i in result:
     json_i = json.dumps(i)

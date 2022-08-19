@@ -70,7 +70,7 @@
 </head>
 
 <body>
-    <div class="floatMessage" id="WebkitWall">
+    <div class="floatMessage hide" id="WebkitWall">
         <h1>注意</h1>
         <p>
             本页面使用了大量的 Webkit 内核专有属性，请使用 Safari、Chromium
@@ -389,6 +389,10 @@
                 navigator.userAgent.includes("Firefox")
             ) {
                 WebkitWall.classList.add("hide");
+            }
+            else
+            {
+                WebkitWall.classList.remove("hide");
             }
         }
         if (navigator.userAgent.includes("Firefox")) {

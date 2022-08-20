@@ -55,7 +55,7 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
     #print(authorBlackList)
     #authorBlackList = ["EOE组合", "露早GOGO", "米诺高分少女", "莞儿睡不醒", "柚恩不加糖", "虞莫MOMO", "哎呀米诺录播组", "E坨史", "EOE五人团应援会", "壹ちゃン", "墨烧_莞熊电台记者", "露早老公", "烂活机器人", "长崎濑野kira", "我不该拥有炽热的梦", "北安不是北门安保"]
     for i in videoResult:     #处理搜索结果 计算权重
-        __weight_random = random.randint(-10, 200)  # 初始化 随机权重
+        __weight_random = random.randint(-100, 200)  # 初始化 随机权重
         __weight_like = 0        #初始化 点顶
         __weight_coin = 0        #初始化 投币
         __weight_collect = 0     #初始化 收藏
@@ -89,10 +89,10 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
             if b == "like":   #权重 计算点顶
                 __like = i[b]
                 if i[b] <= 900:
-                    __weight_like = i[b] * 1.21
+                    __weight_like = i[b] * 0.4 * 1.21
                     __debug = __debug+"低顶率。"
                 else:
-                    __weight_like = i[b] * 0.18
+                    __weight_like = i[b] * 0.1 * 0.18
                     __debug = __debug+"高顶率。"
             if b == "favorites":    #权重 计算收藏
                 __weight_collect = i[b] * 0.3
@@ -101,26 +101,26 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                 __sendTimeCalc = int(int(time.time()) - int(i[b]))/(60*60*24)
                 __debug = __debug+"时效:"+str(i[b])+"。"
                 if __sendTimeCalc >= 5:  #老的视频 5*24*60*60秒后（五天后）
-                    __weight_sendTime = -9345080
+                    __weight_sendTime = -1875
                     __debug = __debug+"老视频。"
                     #print("too old")
-                if __sendTimeCalc <= 2:  #新的视频
+                if __sendTimeCalc <= 3:  #新的视频
                     #print("New video")
-                    __weight_sendTime = 48706
+                    __weight_sendTime = 487
                     __debug = __debug+"更新的视频。"
             if b == "play":         #权重 计算点阅
                 if i[b] <= 5000:
-                    __weight_click = ( 12 + i[b] ) * 1.2
+                    __weight_click = ( 12 + (i[b] * 0.5) ) * 1.2
                     __debug = __debug+"观看很少。"
                 elif i[b] <= 30000:
-                    __weight_click = ( 9 + i[b] ) * 0.7
+                    __weight_click = ( 9 + (i[b] * 0.37) ) * 0.7
                     __debug = __debug+"观看三万内。"
                 else:
-                    __weight_click = ( 1 + i[b] ) * 0
+                    __weight_click = ( 1 + (i[b] * 0.27) ) * 0
                     __debug = __debug+"观看过多。"
             if b == "video_review": #权重 计算弹幕
                 if i[b] <= 100:
-                    __weight_danmaku = i[b] * 0.2
+                    __weight_danmaku = i[b] * 0.7
                 __debug = __debug+"弹幕:"+str(i[b])+"。"
             if b == "hit_columns":
                 if i[b] == ["author"]:
@@ -137,11 +137,11 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                     for 批 in 原:
                         if 批 == 'coin':
                             if __like <= 原[批]:
-                                __weight_coin = 原[批] * 1.4
-                            elif i[b] >= 86:
-                                __weight_coin = 原[批] * 0.3
-                            else:
+                                __weight_coin = 原[批] * 0.5 + __like
+                            elif i[b] <= 158:
                                 __weight_coin = 原[批]
+                            else:
+                                __weight_coin = 原[批] * 0.3
                     农 = videoInfo['rights']
                     for 批 in 农:
                         if 批 == 'is_cooperation':
@@ -156,11 +156,12 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                         __weight_vertical = -1000
 
         #↓↓↓↓ 计算权重
-        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like + __weight_vertical)
+        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like + __weight_vertical + __weight_cooperation)
         #print("权重值：", __weight)
         # 在视频结果列表中插入权重
         __debug = ""
         i.update({"__weight": __weight, "__filter": __filter, "__authorExclude": __authorExclude, "debug": __debug})
+        #print("随机排序：", int(__weight_random), "，点阅：", int(__weight_click), "，发送：", int(__weight_sendTime), "，一创：", int(__weight_author), "，弹幕：", int(__weight_danmaku), "，收藏：", int(__weight_collect), "，投币：", int(__weight_coin), "，顶：", int(__weight_like), "，横屏？：", int(__weight_vertical))
         i = videoResult                  #将缓存中的列表赋给结果 并返回
     return videoResult
 

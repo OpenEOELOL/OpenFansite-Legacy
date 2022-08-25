@@ -101,7 +101,7 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                 __sendTimeCalc = int(int(time.time()) - int(i[b]))/(60*60*24)
                 __debug = __debug+"时效:"+str(i[b])+"。"
                 if __sendTimeCalc >= 5:  #老的视频 5*24*60*60秒后（五天后）
-                    __weight_sendTime = -1875
+                    __weight_sendTime = -38750
                     __debug = __debug+"老视频。"
                     #print("too old")
                 if __sendTimeCalc <= 3:  #新的视频

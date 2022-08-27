@@ -611,12 +611,14 @@ button.pageSwitcherText {
     }
 }
 
-@media (display-mode: fullscreen)
-.main {
-    width: 100vw;
-    background-color: #f2f2f2;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    font-family: lxgwfasmartgothic;
+@media (display-mode: fullscreen) {
+    .main {
+        width: 100vw;
+        background-color: #f2f2f2;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        font-family: lxgwfasmartgothic;
+    }
+    
 }

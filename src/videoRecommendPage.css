@@ -599,7 +599,7 @@ button.pageSwitcherText {
     margin: 2px;
 }
 
-@media all and (display-mode: fullscreen) {
+@media all and (display-mode: fullscreen and max-width: 720px) {
     .main {
         width: 100vw;
         height: calc(100vw - 0.1px);
@@ -609,4 +609,14 @@ button.pageSwitcherText {
         flex-wrap: nowrap;
         font-family: "LXGWFasmartGothic";
     }
+}
+
+@media (display-mode: fullscreen)
+.main {
+    width: 100vw;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-family: lxgwfasmartgothic;
 }

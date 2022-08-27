@@ -28,7 +28,7 @@ OpenFansite 是一个高定制性的哔哩哔哩视频推送网站服务。通�
 
 1. Fork 一份代码
 2. 在终端执行 ` pip install -r requirements.txt ` 安装必要的库。
-3. 修改 ` dataSpy.py ` 里的代码，对搜索关键词、搜索页数、无关搜索结果、一创作者名单等进行调整。
+3. 修改 ` dataSpy.py `、`BlockWord.txt` 与 `authorBlackList.txt` 里的代码，对搜索关键词、搜索页数、无关搜索结果、一创作者名单等进行调整。
 4. 使用 ` crontab ` 命令定时对 ` dataSpy.py ` 执行。或立即执行，执行后会生成 ` result.json ` 文件。请不要动它。
 5. 执行 ` server.py ` 文件或在终端执行 ` sanic server.app ` 来启动站点。
 6. 访问 ` http://127.0.0.1:8080 ` 打开站点。**完成！**

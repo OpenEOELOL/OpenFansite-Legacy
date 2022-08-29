@@ -173,7 +173,7 @@ def MutiPageResult(keyword, moreInfomation=False):  # 多页结果整合函数
 
     result = []     #初始化搜索结果列表
     page = videoSearch(keyword, 1, False)["numPages"] #获取页数
-    maxPage = 50    #设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
+    maxPage = 2    #设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
                     #哔哩哔哩最多的结果页数是 50 页，所以请不要大于这个值。不要设置为 1 页，不然什么都不会被获取到。
     page = maxPage if page >= maxPage else page  # 若页数大于 maxPage 页，最大获取 maxPage 页。可在上面设置。
     for i in range(1, page): #遍历搜索的所有页数
@@ -250,7 +250,7 @@ def makeJson(nameList=["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"],
 
 ################ 获取关键词列表
 KeyWords = []  # 初始化关键词列表
-with open('keyWord.txt', 'r', encoding='UTF-8') as f:
+with open('keyWords.txt', 'r', encoding='UTF-8') as f:
     elements = f.read().split('\n')[:-1]
     for element in elements:
         KeyWords.append(element)

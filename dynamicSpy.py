@@ -66,24 +66,41 @@ def makeResultJsonFriendly(keyword="", pages=1, printOrNot=False):
     for i in pendingData:
         cardJson = json.loads(i["card"])
         if "item" in cardJson:
-            data.append({"username": cardJson["user"]["name"],
-                        "userid": cardJson["user"]["uid"],
-                        #"content": cardJson["item"]["description"],
-                        "firstPicture": cardJson["item"]["pictures"][0]["img_src"],
-                        "dynamicID": i["desc"]["dynamic_id"]
-            })
+            if "pictures" in cardJson["item"]:
+                try:
+                    data.append({"username": cardJson["user"]["name"],
+                                "userid": cardJson["user"]["uid"],
+                                #"content": cardJson["item"]["description"],
+                                "firstPicture": cardJson["item"]["pictures"][0]["img_src"],
+                                "dynamicID": i["desc"]["dynamic_id"]
+                    })
+                except KeyError:
+                    pass
+                else:
+                    pass
     return data
 
 
-def MutiDataSpy():
-    pendingData = {}
+def MutiDataSpy(pages=1, printOrNot=False):
+    pendingData = []
     ################ 获取关键词列表
     KeyWords = []  # 初始化关键词列表
-    with open('keyWord.txt', 'r', encoding='UTF-8') as f:
+    with open('keyWords.txt', 'r', encoding='UTF-8') as f:
         elements = f.read().split('\n')[:-1]
         for element in elements:
             KeyWords.append(element)
     f.close()
     ################ 获取关键词列表
+    for i in KeyWords:
+        pendingData = pendingData + makeResultJsonFriendly(
+            keyword=i, pages=pages, printOrNot=printOrNot)
+    return pendingData
 
-print(makeResultJsonFriendly(keyword="eoe", pages=1, printOrNot=False))
+if __name__ == '__main__':
+    result = MutiDataSpy(pages=1, printOrNot=False)
+    #这里第一个参数填写关键词（字符串列表），第二个参数填写是否需要更精确的数据（布尔值），当然也会更慢。
+    resultJson = open('resultDynamic.json', 'w', encoding="utf-8")
+    for i in result:
+        json_i = json.dumps(i)
+        resultJson.write(json_i+'\n')
+    resultJson.close()

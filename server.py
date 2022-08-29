@@ -2,7 +2,7 @@
 from sanic import Sanic
 from sanic.response import json, text, html, raw
 from bilibili_api import sync, search
-import json
+import json as theJson
 from jinja2 import Template, FileSystemLoader, Environment
 
 app = Sanic("EOELOL")
@@ -21,13 +21,14 @@ async def api(request, page=-1):
     with open('result.json', 'r') as f:
         StoreList = f.read().split('\n')[:-1]
         for x in StoreList:
-            result = json.loads(x)
+            result = theJson.loads(x)
             videoResult.append(result)
     f.close()
     ################ 获取文件
+    setOnePageHowManyCardYouNeedLoad = 5  # 设置一页加载多少个卡片来展示？
     pages = page
-    pageEnd = pages*20
-    pageStart = pageEnd-19
+    pageEnd = pages*setOnePageHowManyCardYouNeedLoad
+    pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
 
     videoResult = videoResult[pageStart-1:pageEnd]
 
@@ -65,13 +66,13 @@ async def api(request, page=-1):
                     "videoAuthor": "修凡ヽBOO"})
     if pages == -1:
         data = []
-        data.append({"videoTitle": "缺少参数 page:int，示例“/api/1”",
+        data.append({"videoTitle": "Hey! Look at here! You don't set any parameter at this url. You need set a page number at URL bottom. Like this /api/<page:int>",
                     "av": 170001,
                     "videoCover": "",
                     "videoAuthor": ""})
     pageNumberIndicator = {"index": page, "previous": page-1, "next": page+1}
-    pageResult = templateApi.render(videoResult=data, pageNumber=pageNumberIndicator)
-    return text(pageResult)
+    pageResult = theJson.loads(templateApi.render(videoResult=data, pageNumber=pageNumberIndicator))
+    return json(pageResult)
 
 @app.route("/apiDynamic/<page:int>")
 @app.get("/apiDynamic")
@@ -81,48 +82,22 @@ async def api(request, page=-1):
     with open('resultDynamic.json', 'r') as f:
         StoreList = f.read().split('\n')[:-1]
         for x in StoreList:
-            result = json.loads(x)
+            result = theJson.loads(x)
             dynamicResult.append(result)
     f.close()
     ################ 获取文件
+    setOnePageHowManyCardYouNeedLoad = 5  # 设置一页加载多少个卡片来展示？
     pages = page
-    pageEnd = pages*20
-    pageStart = pageEnd-19
+    pageEnd = pages*setOnePageHowManyCardYouNeedLoad
+    pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
 
-    dynamicResult = dynamicResult[pageStart-1:pageEnd]
+    dynamicList = dynamicResult[pageStart-1:pageEnd]
 
-    dynamicList = dynamicResult
-    data = []
-    
-    for dynamicCard in dynamicList:
-        for i in dynamicCard:
-            if i == "title":
-                dynamicTitle = dynamicCard[i]
-            if i == "aid":
-                dynamicAv = dynamicCard[i]
-            if i == "pic":
-                dynamicCover = dynamicCard[i]
-            if i == "author":
-                dynamicAuthor = dynamicCard[i]
-            if i == "__authorExclude":
-                __authorExclude = dynamicCard[i]
-            if i == "play":
-                dynamicPlay = dynamicCard[i]
-            # if i == "coin":
-            #     dynamicCoin = dynamicCard[i]
-            #dynamicInfo = """<img src="./assets/播放.svg" alt="播放量图标">""" + dynamicPlay
-        data.append({"dynamicTitle": dynamicTitle, "av": str(dynamicAv),
-                    "dynamicCover": dynamicCover, "dynamicAuthor": dynamicAuthor, "HideOrNot": __authorExclude})
-
+    pageResult = {"pages": page, "data": dynamicList}
     if pages == -1:
-        data = []
-        data.append({"dynamicTitle": "缺少参数 page:int，示例“/apiDynamic/1”",
-                    "av": 170001,
-                    "dynamicCover": "",
-                    "videoAuthor": ""})
-    pageNumberIndicator = {"index": page, "previous": page-1, "next": page+1}
-    pageResult = templateApi.render(videoResult=data, pageNumber=pageNumberIndicator)
-    return text(pageResult)
+        pageResult = {"pages": page, "data": [
+            {"username": "Hey! Look at here! You don't set any parameter at this url. You need set a page number at URL bottom. Like this /apiDynamic/<page:int>", "userid": 0, "firstPicture": "", "dynamicID": 0}]}
+    return json(pageResult)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, fast=True, auto_reload=True)

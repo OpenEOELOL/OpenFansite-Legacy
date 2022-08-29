@@ -101,12 +101,12 @@ async def api(request, page=-1):
 
     dynamicList = dynamicResult[pageStart-1:pageEnd]
 
-    pageResult = {"problem": "no_problem", "pages": page, "data": dynamicList}
+    pageResult = {"problem": "no_problem", "page": page, "data": dynamicList}
     if pages == -1:
-        pageResult = {"problem": "wrong_page", "pages": page, "data": [
+        pageResult = {"problem": "wrong_page", "page": page, "data": [
             {"username": "Hey! Look at here! You don't set any parameter at this url. You need set a page number at URL bottom. Like this /apiDynamic/<page:int>", "userid": 0, "firstPicture": "", "dynamicID": 0}]}
     if pages > maxPage:
-        pageResult = {"problem": "no_more", "pages": page, "data": [
+        pageResult = {"problem": "no_more", "page": page, "data": [
             {"tips": "No more"}]}
     return json(pageResult)
 

@@ -73,5 +73,56 @@ async def api(request, page=-1):
     pageResult = templateApi.render(videoResult=data, pageNumber=pageNumberIndicator)
     return text(pageResult)
 
+@app.route("/apiDynamic/<page:int>")
+@app.get("/apiDynamic")
+async def api(request, page=-1):
+    ################ 获取文件
+    dynamicResult = []
+    with open('resultDynamic.json', 'r') as f:
+        StoreList = f.read().split('\n')[:-1]
+        for x in StoreList:
+            result = json.loads(x)
+            dynamicResult.append(result)
+    f.close()
+    ################ 获取文件
+    pages = page
+    pageEnd = pages*20
+    pageStart = pageEnd-19
+
+    dynamicResult = dynamicResult[pageStart-1:pageEnd]
+
+    dynamicList = dynamicResult
+    data = []
+    
+    for dynamicCard in dynamicList:
+        for i in dynamicCard:
+            if i == "title":
+                dynamicTitle = dynamicCard[i]
+            if i == "aid":
+                dynamicAv = dynamicCard[i]
+            if i == "pic":
+                dynamicCover = dynamicCard[i]
+            if i == "author":
+                dynamicAuthor = dynamicCard[i]
+            if i == "__authorExclude":
+                __authorExclude = dynamicCard[i]
+            if i == "play":
+                dynamicPlay = dynamicCard[i]
+            # if i == "coin":
+            #     dynamicCoin = dynamicCard[i]
+            #dynamicInfo = """<img src="./assets/播放.svg" alt="播放量图标">""" + dynamicPlay
+        data.append({"dynamicTitle": dynamicTitle, "av": str(dynamicAv),
+                    "dynamicCover": dynamicCover, "dynamicAuthor": dynamicAuthor, "HideOrNot": __authorExclude})
+
+    if pages == -1:
+        data = []
+        data.append({"dynamicTitle": "缺少参数 page:int，示例“/apiDynamic/1”",
+                    "av": 170001,
+                    "dynamicCover": "",
+                    "videoAuthor": ""})
+    pageNumberIndicator = {"index": page, "previous": page-1, "next": page+1}
+    pageResult = templateApi.render(videoResult=data, pageNumber=pageNumberIndicator)
+    return text(pageResult)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, fast=True, auto_reload=True)

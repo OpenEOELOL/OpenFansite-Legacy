@@ -1,0 +1,1 @@
+{"page": {{pageNumber.index}}, "data": [{% for dynamicCard in dynamicResult %} {"av": {{dynamicCard.av}}, "tweet": "{{dynamicCard.tweet}}", "author": "{{dynamicCard.author}}", "picture": "{{dynamicCard.picture}}"}{% if not loop.last %},{% endif %}{% endfor %}]}

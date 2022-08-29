@@ -247,7 +247,17 @@ def makeJson(nameList=["EOE", "露早", "米诺", "莞儿", "柚恩", "虞莫"],
 
 #此处参考 @Risk2 感谢：https://www.zhihu.com/question/67111152/answer/249259611
 #数据写入
-result = makeJson(["EOE", "露早", "米诺", "莞儿","柚恩", "虞莫"], True)
+
+################ 获取关键词列表
+KeyWords = []  # 初始化关键词列表
+with open('keyWord.txt', 'r', encoding='UTF-8') as f:
+    elements = f.read().split('\n')[:-1]
+    for element in elements:
+        KeyWords.append(element)
+f.close()
+################ 获取关键词列表
+
+result = makeJson(KeyWords, True)
 #这里第一个参数填写关键词（字符串列表），第二个参数填写是否需要更精确的数据（布尔值），当然也会更慢。
 resultJson = open('result.json', 'w', encoding="utf-8")
 for i in result:

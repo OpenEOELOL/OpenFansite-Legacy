@@ -29,6 +29,7 @@ async def api(request, page=-1):
     pages = page
     pageEnd = pages*setOnePageHowManyCardYouNeedLoad
     pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
+    maxPage = int((len(videoResult)-1) / setOnePageHowManyCardYouNeedLoad + 1)
 
     videoResult = videoResult[pageStart-1:pageEnd]
 
@@ -70,6 +71,12 @@ async def api(request, page=-1):
                     "av": 170001,
                     "videoCover": "",
                     "videoAuthor": ""})
+    if pages > maxPage:
+        data = []
+        data.append({"videoTitle": "No More 没有更多了",
+                    "av": 170001,
+                    "videoCover": "",
+                    "videoAuthor": "no_more"})
     pageNumberIndicator = {"index": page, "previous": page-1, "next": page+1}
     pageResult = theJson.loads(templateApi.render(videoResult=data, pageNumber=pageNumberIndicator))
     return json(pageResult)
@@ -90,13 +97,17 @@ async def api(request, page=-1):
     pages = page
     pageEnd = pages*setOnePageHowManyCardYouNeedLoad
     pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
+    maxPage = int((len(dynamicResult)-1) / setOnePageHowManyCardYouNeedLoad + 1)
 
     dynamicList = dynamicResult[pageStart-1:pageEnd]
 
-    pageResult = {"pages": page, "data": dynamicList}
+    pageResult = {"problem": "no_problem", "pages": page, "data": dynamicList}
     if pages == -1:
-        pageResult = {"pages": page, "data": [
+        pageResult = {"problem": "wrong_page", "pages": page, "data": [
             {"username": "Hey! Look at here! You don't set any parameter at this url. You need set a page number at URL bottom. Like this /apiDynamic/<page:int>", "userid": 0, "firstPicture": "", "dynamicID": 0}]}
+    if pages > maxPage:
+        pageResult = {"problem": "no_more", "pages": page, "data": [
+            {"tips": "No more"}]}
     return json(pageResult)
 
 if __name__ == '__main__':

@@ -97,7 +97,7 @@ def MutiDataSpy(pages=1, printOrNot=False):
     return pendingData
 
 if __name__ == '__main__':
-    result = MutiDataSpy(pages=1, printOrNot=False)
+    result = MutiDataSpy(pages=5, printOrNot=True)
     #这里第一个参数填写关键词（字符串列表），第二个参数填写是否需要更精确的数据（布尔值），当然也会更慢。
     resultJson = open('resultDynamic.json', 'w', encoding="utf-8")
     for i in result:

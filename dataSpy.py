@@ -80,14 +80,15 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                 i[b] = i[b]+"@544w_340h_1c"
             if b == "author": #判定 作者
                 for BlackAuthor in authorBlackList:
-                    if i[b].find(BlackAuthor) != -1:
-                        #print("排除", i[b])
-                        #print("已排除并 __authorExclude 设置为真：", i[b])
-                        __weight_author = -9765
-                        __authorExclude = True
-                        __debug = __debug+"作者已排除。"
-                    else:
-                        pass
+                    for z in range(1, 50):
+                        if i[b].find(BlackAuthor) != -1:
+                            #print("排除", i[b])
+                            #print("已排除并 __authorExclude 设置为真：", i[b])
+                            __weight_author = -9765
+                            __authorExclude = True
+                            __debug = __debug+"作者已排除。"
+                        else:
+                            pass
             if b == "like":   #权重 计算点顶
                 __like = i[b]
                 if i[b] <= 900:
@@ -112,13 +113,13 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                     __debug = __debug+"更新的视频。"
             if b == "play":         #权重 计算点阅
                 if i[b] <= 5000:
-                    __weight_click = ( 12 + (i[b] * 0.5) ) * 1.2
+                    __weight_click = ( 12 + (i[b] * 0.5) ) * 0.5
                     __debug = __debug+"观看很少。"
                 elif i[b] <= 30000:
-                    __weight_click = ( 9 + (i[b] * 0.37) ) * 0.7
+                    __weight_click = ( 9 + (i[b] * 0.37) ) * 1.2
                     __debug = __debug+"观看三万内。"
                 else:
-                    __weight_click = ( 1 + (i[b] * 0.27) ) * 0
+                    __weight_click = ( 1 + (i[b] * 0.27) ) * 0.01
                     __debug = __debug+"观看过多。"
             if b == "video_review": #权重 计算弹幕
                 if i[b] <= 100:
@@ -183,7 +184,7 @@ def MutiPageResult(keyword, moreInfomation=False):  # 多页结果整合函数
 
     result = []     #初始化搜索结果列表
     page = videoSearch(keyword, 1, False)["numPages"] #获取页数
-    maxPage = 2    #设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
+    maxPage = 50    #设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
                     #哔哩哔哩最多的结果页数是 50 页，所以请不要大于这个值。不要设置为 1 页，不然什么都不会被获取到。
     page = maxPage if page >= maxPage else page  # 若页数大于 maxPage 页，最大获取 maxPage 页。可在上面设置。
     for i in range(1, page): #遍历搜索的所有页数

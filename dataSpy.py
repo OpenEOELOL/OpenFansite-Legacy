@@ -11,7 +11,7 @@ import time
 #settings.proxy = "http://account:password@ProxyAddress.cat"  # 如果需要账号以及密码
 
 
-def wait(sec=1):  #“等等陈睿”函数 这里填等待秒或在调用函数时填写 太快会被 -412 拦截
+def wait(sec=2.33):  #“等等陈睿”函数 这里填等待秒或在调用函数时填写 太快会被 -412 拦截
     """
     等等陈睿
         太快会被陈睿 Gank，特此写函数。
@@ -130,11 +130,11 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
             if b == "tag":
                 tag = i[b].split(',')
                 for tagElement in tag:
-                    if tagElement.lower() in __goodTag.lower():
-                        __weight_tag = 1000
+                    if list(map(lambda x: x.lower(), tagElement)) in list(map(lambda x: x.lower(), __goodTag)):
+                        __weight_tag = 10000
             if b == "typename":
-                if i[b].lower() in __goodTag.lower():
-                    __weight_tag = 1000
+                if i[b].lower() in list(map(lambda x: x.lower(), __goodTag)):
+                    __weight_tag = 10000
             if moreInfomation:
                 if b == "aid":
                     videoInfo = sync(video.Video(aid=i[b]).get_info())
@@ -171,7 +171,7 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
         # 在视频结果列表中插入权重
         __debug = ""
         i.update({"__weight": __weight, "__filter": __filter, "__authorExclude": __authorExclude, "debug": __debug})
-        #print("随机排序：", int(__weight_random), "，点阅：", int(__weight_click), "，发送：", int(__weight_sendTime), "，一创：", int(__weight_author), "，弹幕：", int(__weight_danmaku), "，收藏：", int(__weight_collect), "，投币：", int(__weight_coin), "，顶：", int(__weight_like), "，横屏？：", int(__weight_vertical))
+        #print("随机排序：", int(__weight_random), "，点阅：", int(__weight_click), "，发送：", int(__weight_sendTime), "，一创：", int(__weight_author), "，弹幕：", int(__weight_danmaku), "，收藏：", int(__weight_collect), "，投币：", int(__weight_coin), "，顶：", int(__weight_like), "，横屏？：", int(__weight_vertical), "分区：", int(__weight_tag))
         i = videoResult                  #将缓存中的列表赋给结果 并返回
     return videoResult
 

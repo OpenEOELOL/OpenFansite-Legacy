@@ -65,10 +65,12 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
         __weight_click = 0       #初始化 点阅
         __weight_cooperation = 0 #初始化 联合
         __weight_vertical = 0    #初始化 竖屏
+        __weight_tag = 0         #初始化 類型標簽
         __filter = False         #初始化 过滤
         __weight = 0             #初始化 权重值
         __authorExclude = False  #初始化 排除
         __debug = ""             #初始化 测试变量
+        __goodTag = ["鬼畜", "人力VOCALOID", "音MAD", "MMD·3D", "MMD", "MMD.3D", "手书"] #初始化列表 大力推荐的标签
         for b in i:           # 遍历  字典
             if b == "title":  # 消除  <em> 关键词标记
                 i[b] = i[b].replace('<em class="keyword">', "").replace('</em>', "")
@@ -101,7 +103,7 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                 __sendTimeCalc = int(int(time.time()) - int(i[b]))/(60*60*24)
                 __debug = __debug+"时效:"+str(i[b])+"。"
                 if __sendTimeCalc >= 5:  #老的视频 5*24*60*60秒后（五天后）
-                    __weight_sendTime = -1875
+                    __weight_sendTime = -38750
                     __debug = __debug+"老视频。"
                     #print("too old")
                 if __sendTimeCalc <= 3:  #新的视频
@@ -125,6 +127,14 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
             if b == "hit_columns":
                 if i[b] == ["author"]:
                     __filter = True
+            if b == "tag":
+                tag = i[b].split(',')
+                for tagElement in tag:
+                    if tagElement.lower() in __goodTag.lower():
+                        __weight_tag = 1000
+            if b == "typename":
+                if i[b].lower() in __goodTag.lower():
+                    __weight_tag = 1000
             if moreInfomation:
                 if b == "aid":
                     videoInfo = sync(video.Video(aid=i[b]).get_info())
@@ -156,7 +166,7 @@ def dataSpy(kw, pg, moreInfomation=False): #数据捉虫函数
                         __weight_vertical = -1000
 
         #↓↓↓↓ 计算权重
-        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like + __weight_vertical + __weight_cooperation)
+        __weight = int(__weight_random + __weight_click + __weight_sendTime + __weight_author + __weight_danmaku + __weight_collect + __weight_coin + __weight_like + __weight_vertical + __weight_cooperation + __weight_tag)
         #print("权重值：", __weight)
         # 在视频结果列表中插入权重
         __debug = ""

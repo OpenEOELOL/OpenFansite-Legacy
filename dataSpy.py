@@ -11,7 +11,7 @@ import time
 #settings.proxy = "http://account:password@ProxyAddress.cat"  # 如果需要账号以及密码
 
 
-def wait(sec=2.33):  #“等等陈睿”函数 这里填等待秒或在调用函数时填写 太快会被 -412 拦截
+def wait(sec=1):  #“等等陈睿”函数 这里填等待秒或在调用函数时填写 太快会被 -412 拦截
     """
     等等陈睿
         太快会被陈睿 Gank，特此写函数。
@@ -27,7 +27,7 @@ def videoSearch(kw, pg, printOrNot=True): #视频搜索函数
         print("搜索视频，关键词“", kw, "”，第", pg, "页。")
     #↓ 调用 API 搜索（由 bilibili-api-python 库提供）赋给结果变量 并返回
     try:
-        result = sync(search.web_search(keyword=kw, page=pg))
+        result = sync(search.search(keyword=kw, page=pg))
     except:
         print("连接错误")
     return result

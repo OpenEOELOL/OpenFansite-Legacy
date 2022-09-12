@@ -1,4 +1,4 @@
 bilibili_api==9.1.0
-bilibili_api_python==11.6.1
+bilibili_api_python==12.3.3
 Jinja2==3.1.2
 sanic==22.6.0

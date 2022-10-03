@@ -507,12 +507,12 @@
             function showSetting() {
                 document.getElementById("settings").classList.remove("hide");
                 document.getElementById("CloseSetting").focus();
-                dialogOpen = true;
+                window.dialogOpen = true;
             }
             function hideSetting() {
                 document.getElementById("settings").classList.add("hide");
                 document.getElementById("Setting").focus();
-                dialogOpen = false;
+                window.dialogOpen = false;
             }
             document.addEventListener(
                 "keydown",

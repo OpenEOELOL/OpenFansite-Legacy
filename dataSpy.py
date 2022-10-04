@@ -6,6 +6,7 @@ from collections import OrderedDict
 import json
 import random
 import time
+import betterVideoDataResult
 
 #settings.proxy = "http://ProxyAddress.cat"  # 填写代理地址
 #settings.proxy = "http://account:password@ProxyAddress.cat"  # 如果需要账号以及密码
@@ -190,7 +191,7 @@ def MutiPageResult(keyword, moreInfomation=False):  # 多页结果整合函数
 
     result = []  # 初始化搜索结果列表
     page = videoSearch(keyword, 1, False)["numPages"]  # 获取页数
-    maxPage = 1  # 设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
+    maxPage = 50  # 设置最大获取页数，设置更小的值可更快的爬完搜索结果，但是会导致结果不全。
     #哔哩哔哩最多的结果页数是 50 页，所以请不要大于这个值。不要设置为 0。
     maxPage = maxPage+1
     # 若页数大于 maxPage 页，最大获取 maxPage 页。可在上面设置。
@@ -277,6 +278,7 @@ f.close()
 ################ 获取关键词列表
 
 result = makeJson(KeyWords, True)
+result = betterVideoDataResult.cleanShitKey(videoResult=result)
 #这里第一个参数填写关键词（字符串列表），第二个参数填写是否需要更精确的数据（布尔值），当然也会更慢。
 resultJson = open('result.json', 'w', encoding="utf-8")
 for i in result:

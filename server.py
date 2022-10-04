@@ -19,13 +19,13 @@ async def api(request, page=-1):
     ################ 获取文件
     videoResult = []
     with open('result.json', 'r') as f:
-        StoreList = f.read().split('\n')[:-1]
+        StoreList = f.read().replace("\\", "\\\\").split('\n')[:-1]
         for x in StoreList:
             result = theJson.loads(x)
             videoResult.append(result)
     f.close()
     ################ 获取文件
-    setOnePageHowManyCardYouNeedLoad = 5  # 设置一页加载多少个卡片来展示？
+    setOnePageHowManyCardYouNeedLoad = 20  # 设置一页加载多少个卡片来展示？
     pages = page
     pageEnd = pages*setOnePageHowManyCardYouNeedLoad
     pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
@@ -87,13 +87,42 @@ async def api(request, page=-1):
     ################ 获取文件
     dynamicResult = []
     with open('resultDynamic.json', 'r') as f:
-        StoreList = f.read().split('\n')[:-1]
+        StoreList = f.read().replace("\\", "\\\\").split('\n')[:-1]
         for x in StoreList:
             result = theJson.loads(x)
             dynamicResult.append(result)
     f.close()
     ################ 获取文件
-    setOnePageHowManyCardYouNeedLoad = 5  # 设置一页加载多少个卡片来展示？
+    setOnePageHowManyCardYouNeedLoad = 20  # 设置一页加载多少个卡片来展示？
+    pages = page
+    pageEnd = pages*setOnePageHowManyCardYouNeedLoad
+    pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)
+    maxPage = int((len(dynamicResult)-1) / setOnePageHowManyCardYouNeedLoad + 1)
+
+    dynamicList = dynamicResult[pageStart-1:pageEnd]
+
+    pageResult = {"problem": "no_problem", "page": page, "data": dynamicList}
+    if pages == -1:
+        pageResult = {"problem": "wrong_page", "page": page, "data": [
+            {"username": "Hey! Look at here! You don't set any parameter at this url. You need set a page number at URL bottom. Like this /apiDynamic/<page:int>", "userid": 0, "firstPicture": "", "dynamicID": 0}]}
+    if pages > maxPage:
+        pageResult = {"problem": "no_more", "page": page, "data": [
+            {"tips": "No more"}]}
+    return json(pageResult)
+
+@app.route("/search/<page:str>")
+@app.get("/search")
+async def apiSearch(request, page=-1):
+    ################ 获取文件
+    dynamicResult = []
+    with open('resultDynamic.json', 'r') as f:
+        StoreList = f.read().replace("\\", "\\\\").split('\n')[:-1]
+        for x in StoreList:
+            result = theJson.loads(x)
+            dynamicResult.append(result)
+    f.close()
+    ################ 获取文件
+    setOnePageHowManyCardYouNeedLoad = 20  # 设置一页加载多少个卡片来展示？
     pages = page
     pageEnd = pages*setOnePageHowManyCardYouNeedLoad
     pageStart = pageEnd-(setOnePageHowManyCardYouNeedLoad-1)

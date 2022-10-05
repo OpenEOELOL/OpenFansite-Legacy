@@ -254,6 +254,11 @@ input.SwitchCheckBox:checked + .Slider:before {
     margin-top: -4px;
 }
 
+#OpenInRichasyBiliLabel {
+    margin-left: 5px;
+    margin-top: -4px;
+}
+
 #ExcludeRecordManAndCutMan {
     display: flex;
     flex-direction: row;

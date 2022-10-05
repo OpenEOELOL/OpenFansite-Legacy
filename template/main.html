@@ -272,12 +272,14 @@
             );
             if (checkboxBili.checked) {
                 var link = "richasy-bili://play?video=" + av;
+                window.location.href= link;
             } else if (checkbox.checked) {
                 var link = "bilibili://video/" + av;
+                window.location.href= link;
             } else {
                 var link = "https://www.bilibili.com/video/av" + av;
+                window.open(link, "_newtab");
             }
-            window.open(link, "_newtab");
         }
         var ECheckBox = document.getElementById("ExcludeCheckBox");
         var ItIsRecoder = document.querySelectorAll(".ItIsRecoder");

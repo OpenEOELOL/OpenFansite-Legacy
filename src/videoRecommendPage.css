@@ -275,6 +275,7 @@ input.SwitchCheckBox:checked + .Slider:before {
     height: calc(8px + 6px + 1em + 5px);
     padding: 7px 0px;
     scroll-behavior: smooth;
+    scrollbar-width: none;
 }
 
 .floatMessage {

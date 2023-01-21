@@ -72,7 +72,8 @@ def makeResultJsonFriendly(keyword="", pages=1, printOrNot=False):
                                 "userid": cardJson["user"]["uid"],
                                 #"content": cardJson["item"]["description"],
                                 "firstPicture": cardJson["item"]["pictures"][0]["img_src"],
-                                "dynamicID": i["desc"]["dynamic_id"]
+                                "dynamicID": i["desc"]["dynamic_id"],
+                                "dynamicIDStr": str(i["desc"]["dynamic_id"])
                     })
                 except KeyError:
                     pass
